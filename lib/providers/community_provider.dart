@@ -67,7 +67,7 @@ class CommunityProvider with ChangeNotifier {
       'timestamp': FieldValue.serverTimestamp(),
     });
   }
-  
+ 
 
   // List<CommunityChat> _loadCommunityChat(QuerySnapshot snapshot) {
   //   return snapshot.docs.map((snap) {
