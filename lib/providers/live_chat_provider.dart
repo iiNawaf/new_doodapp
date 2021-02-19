@@ -17,7 +17,7 @@ class LiveChatProvider with ChangeNotifier{
     
   }
 
-  List<LiveChat> loadLiveChat(QuerySnapshot snapshot){
+  List<LiveChat> _loadLiveChat(QuerySnapshot snapshot){
     return snapshot.docs.map((docs){
       return LiveChat(
         senderID: docs.data()['sender_id'],
@@ -25,6 +25,9 @@ class LiveChatProvider with ChangeNotifier{
         senderImage: docs.data()['sender_image'],
         email: docs.data()['sender_email'],
       );
-    });
+    }).toList();
   }
+
+  
+
 }

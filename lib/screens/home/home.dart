@@ -22,16 +22,17 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
 
   @override
-    void dispose() {
-      liveChatController.clear();
-      super.dispose();
-    }
+  void dispose() {
+    liveChatController.clear();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authData = Provider.of<AuthProvider>(context);
     final community = Provider.of<CommunityProvider>(context);
     final liveChatProvider = Provider.of<LiveChatProvider>(context);
-    community.fetchCommunityList();
+    // community.fetchCommunityList();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -66,7 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                               : Container(
                                   height: 150,
-                                  child: CommunitiesList(communities: community.communityList)),
+                                  child: CommunitiesList(
+                                      communities: community.communityList)),
                         ),
 
                         // timeline
@@ -86,17 +88,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       controller: liveChatController,
                       decoration: InputDecoration(
                         suffixIcon: GestureDetector(
-                          onTap: () async{
-                            if(liveChatController.text == ""){
+                          onTap: () async {
+                            if (liveChatController.text == "") {
                               return null;
-                            }else{
-                            await liveChatProvider.sendToLiveChat(
-                            authData.loggedInUser.id,
-                            authData.loggedInUser.username,
-                            authData.loggedInUser.profileImage,
-                            authData.loggedInUser.email
-                          );
-                          liveChatController.clear();
+                            } else {
+                              await liveChatProvider.sendToLiveChat(
+                                  authData.loggedInUser.id,
+                                  authData.loggedInUser.username,
+                                  authData.loggedInUser.profileImage,
+                                  authData.loggedInUser.email);
+                              liveChatController.clear();
                             }
                           },
                           child: Icon(Icons.send),

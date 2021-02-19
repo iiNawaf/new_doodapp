@@ -73,6 +73,7 @@ class _MyAppState extends State<MyApp> {
             ],
             locale: Locale("en", "US"),
             routes: {
+              AuthWrapper.routeName: (context) => AuthWrapper(),
               HomeScreen.routeName: (context) => HomeScreen(),
               SignInScreen.routeName: (context) => SignInScreen(),
               SignUpScreen.routeName: (context) => SignUpScreen(),

@@ -16,7 +16,6 @@ class CommunitiesList extends StatefulWidget {
 class _CommunitiesListState extends State<CommunitiesList> {
   @override
   Widget build(BuildContext context) {
-    final cp = Provider.of<CommunityProvider>(context);
     return ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,

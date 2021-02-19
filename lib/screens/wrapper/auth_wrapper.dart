@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthWrapper extends StatelessWidget {
+  static String routeName = '/screens/wrapper/auth_wrapper.dart';
+  
   @override
   Widget build(BuildContext context) {
     final authData = Provider.of<AuthProvider>(context);

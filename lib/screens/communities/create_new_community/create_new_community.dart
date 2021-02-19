@@ -17,7 +17,7 @@ class CreateNewCommunity extends StatefulWidget {
 class _CreateNewCommunityState extends State<CreateNewCommunity> {
   TextEditingController communityTitleController = TextEditingController();
   TextEditingController communityBioController = TextEditingController();
-  
+  bool isLoading = false;
 
   @override
   void dispose() { 
