@@ -15,7 +15,6 @@ class SubmitSignIn extends StatelessWidget {
       onTap: () async{
         if(SignInScreen.formKey.currentState.validate()){
           await auth.signIn(emailController.text, passwordController.text);
-          
         }
       },
       child: Container(

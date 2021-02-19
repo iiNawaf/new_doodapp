@@ -1,23 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Community {
   final String id;
   final String title;
   final String bio;
   final String image;
   final String ownerID;
-  int totalMembers;
 
-  Community({this.id, this.bio, this.title, this.image, this.ownerID, this.totalMembers});
+  Community({this.id, this.bio, this.title, this.image, this.ownerID});
 }
 
 
 class CommunityChat {
   final String senderID;
   final String communityID;
-  String message;
+  String content;
   String sender;
-  int timestamp;
+  Timestamp timestamp;
 
-  CommunityChat({this.senderID, this.communityID, this.message, this.sender, this.timestamp});
+  CommunityChat({this.senderID, this.communityID, this.content, this.sender, this.timestamp});
 }
 
 
@@ -25,8 +26,8 @@ class CommunityMember{
   final String uid;
   final String username;
   final String email;
-  String image;
+  String profileImage;
 
 
-  CommunityMember({this.uid, this.email, this.username, this.image});
+  CommunityMember({this.uid, this.email, this.username, this.profileImage});
 }

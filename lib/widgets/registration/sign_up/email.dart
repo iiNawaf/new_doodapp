@@ -1,4 +1,3 @@
-import 'package:doodapp/screens/registration/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class SignUpEmail extends StatelessWidget {

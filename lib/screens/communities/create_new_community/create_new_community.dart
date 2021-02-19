@@ -1,13 +1,9 @@
-import 'dart:io';
-
-import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/side/appbar.dart';
-import 'package:doodapp/widgets/communities/choose_community_image.dart';
-import 'package:doodapp/widgets/communities/community_bio.dart';
-import 'package:doodapp/widgets/communities/community_title.dart';
-import 'package:doodapp/widgets/communities/submit_community.dart';
+import 'package:doodapp/widgets/communities/create_new_community/choose_community_image.dart';
+import 'package:doodapp/widgets/communities/create_new_community/community_bio.dart';
+import 'package:doodapp/widgets/communities/create_new_community/community_title.dart';
+import 'package:doodapp/widgets/communities/create_new_community/submit_community.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 class CreateNewCommunity extends StatefulWidget {
@@ -33,11 +29,10 @@ class _CreateNewCommunityState extends State<CreateNewCommunity> {
 
   @override
   Widget build(BuildContext context) {
-    final authData = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
-        child: ApplicationBar(isCreateNewCommunity: true),
+        child: ApplicationBar(isCreateNewCommunity: true, title: "Create Community",),
       ),
       body: Form(
         key: CreateNewCommunity.formKey,

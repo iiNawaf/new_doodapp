@@ -1,6 +1,9 @@
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
-import 'package:doodapp/screens/communities/create_new_community.dart';
+import 'package:doodapp/providers/live_chat_provider.dart';
+import 'package:doodapp/screens/communities/community_chat/community_chat.dart';
+import 'package:doodapp/screens/communities/create_new_community/create_new_community.dart';
+import 'package:doodapp/screens/home/all_communities.dart';
 import 'package:doodapp/screens/wrapper/auth_wrapper.dart';
 import 'package:doodapp/screens/home/home.dart';
 import 'package:doodapp/screens/registration/sign_in.dart';
@@ -33,14 +36,12 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(
           value: CommunityProvider(),
         ),
+        ChangeNotifierProvider.value(
+          value: LiveChatProvider(),
+        ),
       ],
       child: GestureDetector(
-        onTap: (){
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
@@ -54,9 +55,8 @@ class _MyAppState extends State<MyApp> {
               ),
               textTheme: TextTheme(
                 headline:
-                TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-                title:
-                TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+                    TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
                 body1: TextStyle(color: Colors.black),
               ),
             ),
@@ -77,9 +77,11 @@ class _MyAppState extends State<MyApp> {
               SignInScreen.routeName: (context) => SignInScreen(),
               SignUpScreen.routeName: (context) => SignUpScreen(),
               CreateNewCommunity.routeName: (context) => CreateNewCommunity(),
+              AllCommunitiesScreen.routeName: (context) =>
+                  AllCommunitiesScreen(),
+              CommunityChatScreen.routeName: (context) => CommunityChatScreen(),
             },
-            home: AuthWrapper()
-        ),
+            home: AuthWrapper()),
       ),
     );
   }
