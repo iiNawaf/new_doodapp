@@ -35,22 +35,7 @@ class _CommunityInfoScreenState extends State<CommunityInfoScreen> {
         CommunityDetails(community: widget.community),
         widget.community.ownerID == authData.loggedInUser.id
             ? DeleteCommunity(
-                community: widget.community,
-                
-              )
-            : Container(),
-        // Padding(
-        //   padding: const EdgeInsets.all(10),
-        //   child: Row(
-        //     children: [
-        //       Text(
-        //         "Members (${members.length})",
-        //         style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // MembersList(members: members, community: community),
+                community: widget.community) : Container(),
       ]),
     );
   }

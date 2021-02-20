@@ -3,6 +3,8 @@ class LiveChat {
   String senderUsername;
   String senderImage;
   String email;
+  String message;
+  dynamic timestamp;
 
-  LiveChat({this.senderID, this.senderUsername, this.senderImage, this.email});
+  LiveChat({this.senderID, this.senderUsername, this.senderImage, this.email, this.timestamp, this.message});
 }

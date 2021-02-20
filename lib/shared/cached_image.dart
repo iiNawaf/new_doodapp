@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doodapp/widgets/loading/general_loading.dart';
+import 'package:doodapp/widgets/loading/image_loading.dart';
 import 'package:flutter/material.dart';
 
 
@@ -11,7 +11,7 @@ class CachedImage extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: url,
       imageBuilder: (context, loadedImage) => Image(image: loadedImage, fit: BoxFit.cover),
-      placeholder: (context, url) => GeneralLoading(),
+      placeholder: (context, url) => ImageLoading(),
       errorWidget: (context, url, error) => Icon(Icons.error),
     );
   }

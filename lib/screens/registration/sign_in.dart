@@ -22,43 +22,46 @@ class _SignInScreenState extends State<SignInScreen> {
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: SignInScreen.formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Sign In", style: TextStyle(fontSize: 29, fontWeight: FontWeight.bold),),
-              SizedBox(height: 15),
-              SignInEmail(controller: emailController),
-              SizedBox(height: 30),
-              SignInPassword(controller: passwordController),
-              SizedBox(height: 15),
-              Row(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: SubmitSignIn(
-                      emailController: emailController,
-                      passwordController: passwordController,
-                    )
+                  Text("Sign In", style: TextStyle(fontSize: 29, fontWeight: FontWeight.bold),),
+                  SizedBox(height: 15),
+                  SignInEmail(controller: emailController),
+                  SizedBox(height: 30),
+                  SignInPassword(controller: passwordController),
+                  SizedBox(height: 15),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SubmitSignIn(
+                          emailController: emailController,
+                          passwordController: passwordController,
+                        )
+                      ),
+                      Expanded(
+                        child: FlatButton(
+                          onPressed: (){},
+                          child: Text("Forgot Password?"),
+                        )
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: FlatButton(
-                      onPressed: (){},
-                      child: Text("Forgot Password?"),
-                    )
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FlatButton(
-                    onPressed: () => Navigator.pushNamed(context, SignUpScreen.routeName),
-                    child: Text("You don't have an account?", style: TextStyle(color: appColor, fontSize: 15, fontWeight: FontWeight.bold),)
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FlatButton(
+                        onPressed: () => Navigator.pushNamed(context, SignUpScreen.routeName),
+                        child: Text("You don't have an account?", style: TextStyle(color: appColor, fontSize: 15, fontWeight: FontWeight.bold),)
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         ),
       ),

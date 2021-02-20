@@ -25,82 +25,79 @@ class _SubmitCommunityState extends State<SubmitCommunity> {
     final authData = Provider.of<AuthProvider>(context);
     final community = Provider.of<CommunityProvider>(context);
     return GestureDetector(
-            onTap: () async {
-              if (CreateNewCommunity.formKey.currentState.validate()) {
-                if (ChooseCommunityImage.communityImage == null) {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text("Please choose an image"),
-                  ));
-                } else {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) {
-                        return StatefulBuilder(
-                          builder: (context, setState) {
-                            return isLoading
-                                ? GeneralLoading()
-                                : AppAlertDialog(
-                                    title: Text(
-                                      "Creating a community",
-                                      style: TextStyle(fontSize: 21),
-                                    ),
-                                    content: Text(
-                                        "You are about to create a community, are you sure you want to proceed?"),
-                                    actions: [
-                                      GestureDetector(
-                                          onTap: () async {
-                                            setState(() {
-                                              isLoading = true;
-                                            });
-                                            await community.createCommunity(
-                                              widget.title.text,
-                                              widget.bio.text,
-                                              authData.loggedInUser.id,
-                                              ChooseCommunityImage
-                                                  .communityImage,
-                                              authData.loggedInUser.username,
-                                              authData.loggedInUser.email,
-                                              authData
-                                                  .loggedInUser.profileImage,
-                                            );
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                            community.fetchCommunityList();
-                                            Navigator.popUntil(context,
-                                                (route) => route.isFirst);
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text("Yes"),
-                                          )),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: GestureDetector(
-                                            onTap: () => Navigator.pop(context),
-                                            child: Text("Cancel")),
-                                      )
-                                    ],
-                                  );
-                          },
-                        );
-                      });
-                }
-              }
-            },
-            child: Container(
-              height: 50,
-              color: appColor,
-              child: Center(
-                  child: Text(
-                "Create",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              )),
-            ),
-          );
+      onTap: () async {
+        if (CreateNewCommunity.formKey.currentState.validate()) {
+          if (ChooseCommunityImage.communityImage == null) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text("Please choose an image"),
+            ));
+          } else {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return StatefulBuilder(
+                    builder: (context, setState) {
+                      return isLoading
+                          ? GeneralLoading()
+                          : AppAlertDialog(
+                              title: Text(
+                                "Creating a community",
+                                style: TextStyle(fontSize: 21),
+                              ),
+                              content: Text(
+                                  "Are you sure that you want to create a community?"),
+                              actions: [
+                                GestureDetector(
+                                    onTap: () async {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      await community.createCommunity(
+                                        widget.title.text,
+                                        widget.bio.text,
+                                        authData.loggedInUser.id,
+                                        ChooseCommunityImage.communityImage,
+                                        authData.loggedInUser.username,
+                                        authData.loggedInUser.email,
+                                        authData.loggedInUser.profileImage,
+                                      );
+
+                                      community.fetchCommunityList();
+                                      Navigator.popUntil(
+                                          context, (route) => route.isFirst);
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("Yes"),
+                                    )),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GestureDetector(
+                                      onTap: () => Navigator.pop(context),
+                                      child: Text("Cancel")),
+                                )
+                              ],
+                            );
+                    },
+                  );
+                });
+          }
+        }
+      },
+      child: Container(
+        height: 50,
+        color: appColor,
+        child: Center(
+            child: Text(
+          "Create",
+          style: TextStyle(
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        )),
+      ),
+    );
   }
 }

@@ -1,12 +1,14 @@
 import 'package:doodapp/models/community.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
-import 'package:doodapp/providers/live_chat_provider.dart';
 import 'package:doodapp/screens/home/all_communities.dart';
+import 'package:doodapp/screens/live_chat/live_chat.dart';
+import 'package:doodapp/shared/custom_dialog.dart';
 import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/side/appbar.dart';
-import 'package:doodapp/widgets/home/communities_list.dart';
-import 'package:doodapp/widgets/home/timeline.dart';
+import 'package:doodapp/widgets/home/community_list/communities_list.dart';
+import 'package:doodapp/widgets/home/user_image.dart';
+import 'package:doodapp/widgets/home/username.dart';
 import 'package:doodapp/widgets/loading/general_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,10 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final communityProvider = Provider.of<CommunityProvider>(context);
     final authData = Provider.of<AuthProvider>(context);
-    final community = Provider.of<CommunityProvider>(context);
-    final liveChatProvider = Provider.of<LiveChatProvider>(context);
-    // community.fetchCommunityList();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -45,65 +45,101 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   isLoading = true;
                 });
-                await community.fetchCommunityList();
+                await communityProvider.fetchCommunityList();
                 setState(() {
                   isLoading = false;
                 });
               },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                shrinkWrap: true,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Communities
-                        _communityTitle(context, community.communityList),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: community.communityList.isEmpty
-                              ? Center(
-                                  child: Text("No communities available."),
-                                )
-                              : Container(
-                                  height: 150,
-                                  child: CommunitiesList(
-                                      communities: community.communityList)),
-                        ),
-
-                        // timeline
-                        _timelineTitle(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(child: TimelineList()),
-                        ),
-                      ],
-                    ),
-                  ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    height: 90,
-                    color: Colors.white,
-                    child: TextField(
-                      controller: liveChatController,
-                      decoration: InputDecoration(
-                        suffixIcon: GestureDetector(
-                          onTap: () async {
-                            if (liveChatController.text == "") {
-                              return null;
-                            } else {
-                              await liveChatProvider.sendToLiveChat(
-                                  authData.loggedInUser.id,
-                                  authData.loggedInUser.username,
-                                  authData.loggedInUser.profileImage,
-                                  authData.loggedInUser.email);
-                              liveChatController.clear();
-                            }
-                          },
-                          child: Icon(Icons.send),
-                        ),
-                      ),
-                    ),
+                    height: 250,
+                    color: appColor.withOpacity(0.1),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                            UserImage(image: authData.loggedInUser.profileImage),
+                            SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Welcome",
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold)),
+                                Username(username: authData.loggedInUser.username),
+                              ],
+                            )
+                          ]),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _liveChatButton(context),
+                              _signOutButton(context, authData)
+                            ],
+                          )
+                        ]),
+                  ),
+                  
+                  // Communities
+                  _communityTitle(context, communityProvider.communityList),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: communityProvider.communityList.isEmpty
+                        ? Center(
+                            child: Text("No communities available."),
+                          )
+                        : Container(
+                            height: 150,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount:
+                                  communityProvider.communityList.length > 10
+                                      ? 10
+                                      : communityProvider.communityList.length,
+                              itemBuilder: (context, index) {
+                                return CommunitiesList(
+                                    community:
+                                        communityProvider.communityList[index]);
+                              },
+                            ),
+                          ),
+                  ),
+
+                  // my community
+                  _myCommunityTitle(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: communityProvider.communityList.isEmpty
+                        ? Center(
+                            child: Text("No communities available."),
+                          )
+                        : Container(
+                            height: 150,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 1,
+                              itemBuilder: (context, index) {
+                                int ownerIndex = communityProvider.communityList
+                                    .indexWhere((com) =>
+                                        com.ownerID ==
+                                        authData.loggedInUser.id);
+                                return ownerIndex == -1
+                                    ? Text("You don't have a community.")
+                                    : CommunitiesList(
+                                        community: communityProvider
+                                            .communityList[ownerIndex]);
+                              },
+                            ),
+                          ),
                   ),
                 ],
               ),
@@ -135,12 +171,86 @@ Widget _communityTitle(BuildContext context, List<Community> communities) {
       ));
 }
 
-Widget _timelineTitle() {
+Widget _myCommunityTitle() {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Text(
-      "Live Chat",
-      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        "My Community",
+        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      ));
+}
+
+Widget _signOutButton(BuildContext context, AuthProvider authData) {
+  return GestureDetector(
+    child: Container(
+      height: 50,
+      width: 100,
+      decoration: BoxDecoration(
+          color: Colors.grey, borderRadius: BorderRadius.circular(5)),
+      child: Center(
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Icon(Icons.logout),
+          Text(
+            "Sign out",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ],
+      )),
+    ),
+    onTap: () {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AppAlertDialog(
+              title: Text(
+                "Sign out",
+                style: TextStyle(fontSize: 21),
+              ),
+              content: Text("Are you sure you want to sign out?"),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                      onTap: () {
+                        authData.signOut();
+                        Navigator.pop(context);
+                      },
+                      child: Text("Sign out")),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Text("Cancel")),
+                ),
+              ],
+            );
+          });
+    },
+  );
+}
+
+Widget _liveChatButton(BuildContext context) {
+  return GestureDetector(
+    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LiveChatScreen())),
+    child: Container(
+      height: 50,
+      width: 100,
+      decoration:
+          BoxDecoration(color: appColor, borderRadius: BorderRadius.circular(5)),
+      child: Center(
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Icon(Icons.chat_bubble_outline, color: Colors.white),
+          Text(
+            "Live Chat",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ],
+      )),
     ),
   );
 }

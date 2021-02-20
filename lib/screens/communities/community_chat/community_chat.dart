@@ -19,8 +19,6 @@ class CommunityChatScreen extends StatefulWidget {
 
 class _CommunityChatScreenState extends State<CommunityChatScreen> {
   TextEditingController messageController = TextEditingController();
-  bool isLoading = false;
-
   @override
   Widget build(BuildContext context) {
     final cp = Provider.of<CommunityProvider>(context);
@@ -33,9 +31,7 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
             community: widget.community,
       ),
       ),
-      body: isLoading
-          ? GeneralLoading()
-          : Form(
+      body: Form(
               key: CommunityChatScreen.formKey,
               child: Column(children: [
                 Expanded(
@@ -46,6 +42,7 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
                         return GeneralLoading();
                       if (!snapshot.hasData) return Text("No Messages");
                       return ListView.builder(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                           reverse: true,
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
@@ -59,10 +56,6 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
                     },
                   ),
                 ),
-
-                // ChatTextField(
-                //             controller: messageController,
-                //             community: widget.community),
 
                 ChatTextField(
                             controller: messageController,

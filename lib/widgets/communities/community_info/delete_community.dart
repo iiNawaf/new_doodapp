@@ -65,6 +65,7 @@ class _DeleteCommunityState extends State<DeleteCommunity> {
                                     isLoading = true;
                                   });
                                   await cp.deleteCommunity(widget.community.id);
+
                                   setState(() {
                                     isLoading = false;
                                   });

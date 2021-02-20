@@ -13,9 +13,10 @@ class ApplicationBar extends StatelessWidget {
   bool isAllCommunities;
   bool isCommunityChat;
   bool isCommunityInfo;
+  bool isLiveChat;
   String title;
   Community community;
-  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo});
+  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo, this.isLiveChat});
   @override
   Widget build(BuildContext context) {
     final authData = Provider.of<AuthProvider>(context);
@@ -23,39 +24,6 @@ class ApplicationBar extends StatelessWidget {
     return AppBar(
       elevation: 0,
       title: Text(title),
-      leading: isHome == true
-          ? IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context){
-                    return AppAlertDialog(
-                      title: Text("Sign out", style: TextStyle(fontSize: 21),),
-                      content: Text("Are you sure you want to sign out?"),
-                      actions: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              authData.signOut();
-                              Navigator.pop(context);
-                            },
-                            child: Text("Sign out")),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () => Navigator.pop(context),
-                            child: Text("Cancel")),
-                        ),
-                      ],
-                    );
-                  }
-                );
-              },
-            )
-          : null,
       actions: [
         isHome == true
             ? IconButton(
@@ -84,7 +52,6 @@ class ApplicationBar extends StatelessWidget {
                   );
                 }
               },
-                // onPressed: () => Navigator.pushNamed(context, CreateNewCommunity.routeName),
                 icon: Icon(Icons.add, size: 29),
               )
             : isCommunityChat == true 

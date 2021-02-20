@@ -25,33 +25,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: SignUpScreen.formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Sign Up",
-               style: TextStyle(fontSize: 29, fontWeight: FontWeight.bold),
-               ),
-              SizedBox(height: 15,),
-              SignInUsername(controller: usernameController,),
-              SizedBox(height: 30),
-              SignUpEmail(controller: emailController),
-              SizedBox(height: 30),
-              SignUpPassword(controller: passwordController),
-              SizedBox(height: 30),
-              SignUpRePassword(passwordContoller: passwordController),
-              SizedBox(height: 50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SubmitSignUp(
-                    username: usernameController,
-                    email: emailController,
-                    password: passwordController,
-                  )
+                  Text("Sign Up",
+                   style: TextStyle(fontSize: 29, fontWeight: FontWeight.bold),
+                   ),
+                  SizedBox(height: 15,),
+                  SignInUsername(controller: usernameController,),
+                  SizedBox(height: 30),
+                  SignUpEmail(controller: emailController),
+                  SizedBox(height: 30),
+                  SignUpPassword(controller: passwordController),
+                  SizedBox(height: 30),
+                  SignUpRePassword(passwordContoller: passwordController),
+                  SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SubmitSignUp(
+                        username: usernameController,
+                        email: emailController,
+                        password: passwordController,
+                      )
+                    ],
+                )
                 ],
-            )
-            ],
+              ),
+            ),
           ),
         ),
       ),

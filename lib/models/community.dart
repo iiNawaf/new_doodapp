@@ -6,8 +6,9 @@ class Community {
   final String bio;
   final String image;
   final String ownerID;
+  String status;
 
-  Community({this.id, this.bio, this.title, this.image, this.ownerID});
+  Community({this.id, this.bio, this.title, this.image, this.ownerID, this.status});
 }
 
 
@@ -30,4 +31,14 @@ class CommunityMember{
 
 
   CommunityMember({this.uid, this.email, this.username, this.profileImage});
+}
+
+class RecentCommunity{
+  final String id;
+  final String uid;
+  final String title;
+  final String bio;
+  final String image;
+  final dynamic timeStamp;
+  RecentCommunity({this.id, this.title, this.bio, this.image, this.uid, this.timeStamp});
 }

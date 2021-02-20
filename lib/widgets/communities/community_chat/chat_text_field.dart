@@ -22,7 +22,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
     final authData = Provider.of<AuthProvider>(context);
     final communityProvider = Provider.of<CommunityProvider>(context);
     return Container(
-      height: 90,
+      height: 70,
       padding: EdgeInsets.symmetric(horizontal: 15),
       color: Colors.white,
       child: TextFormField(
@@ -44,7 +44,10 @@ class _ChatTextFieldState extends State<ChatTextField> {
                           authData.loggedInUser.id,
                           widget.community.id,
                           widget.controller.text,
-                          authData.loggedInUser.username
+                          authData.loggedInUser.username,
+                          widget.community.title,
+                          widget.community.image,
+                          widget.community.bio
                           );
                       widget.controller.clear();
                       setState(() {

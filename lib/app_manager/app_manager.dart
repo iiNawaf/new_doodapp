@@ -27,7 +27,9 @@ class _AppManagerState extends State<AppManager> {
         //first, fetch user data
         await authProvider.fetchUserData();
         // then, fetch community list
-        await communityProvider.fetchCommunityList();
+        await communityProvider.fetchCommunityList().then((v) {
+          
+        });
         setState(() {
           isLoading = false;
         });
