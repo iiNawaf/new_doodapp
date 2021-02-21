@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "528872969009",
+    "firebase_url": "https://doodapp-ebf46.firebaseio.com",
+    "project_id": "doodapp-ebf46",
+    "storage_bucket": "doodapp-ebf46.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528872969009:android:564a9f2f7b4a41d0795610",
+        "android_client_info": {
+          "package_name": "com.example.dood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528872969009-t5a5utmd45824pesqc5uibiv93499tsj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAks79DDma_6vh3l-Ggt9dxJgEibwI8EDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528872969009-t5a5utmd45824pesqc5uibiv93499tsj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "528872969009-cf36e9pupsjk1r3s1prm5p1bvhmo589e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dood"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
