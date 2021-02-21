@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SignUpEmail extends StatelessWidget {
   TextEditingController controller;
@@ -9,7 +10,15 @@ class SignUpEmail extends StatelessWidget {
     return Container(
       child: TextFormField(
         controller: controller,
-        validator: (value) => value.isEmpty ? "Field is empty" : null,
+        validator: (value) {
+          if(value.isEmpty){
+            return "Field is empty";
+          }else if(!EmailValidator.validate(value) || value.contains(" ")){
+            return "Please type a valid email address";
+          }else{
+            return null;
+          }
+        },
         decoration: InputDecoration(
             labelText: "Email",
             border:

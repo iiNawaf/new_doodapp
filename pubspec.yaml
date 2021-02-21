@@ -37,6 +37,7 @@ dependencies:
   image_picker: ^0.6.6+1
   firebase_storage: ^7.0.0
   cached_network_image:
+  email_validator:
   flutter_localizations:
     sdk: flutter
 

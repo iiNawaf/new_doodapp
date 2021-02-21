@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:doodapp/models/community.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
@@ -15,12 +17,14 @@ import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/screens/home/home.dart";
+  static File userImage;
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController liveChatController = TextEditingController();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = false;
 
   @override
@@ -33,7 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final communityProvider = Provider.of<CommunityProvider>(context);
     final authData = Provider.of<AuthProvider>(context);
+    // authData.signOut();
     return Scaffold(
+      key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: ApplicationBar(isHome: true, title: "Dood"),
@@ -45,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   isLoading = true;
                 });
+                HomeScreen.userImage = null;
+                await authData.fetchUserData();
                 await communityProvider.fetchCommunityList();
                 setState(() {
                   isLoading = false;
@@ -64,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Row(
                             children: [
-                            UserImage(image: authData.loggedInUser.profileImage),
+                            UserImage(scaffoldKey: _scaffoldKey),
                             SizedBox(width: 10),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

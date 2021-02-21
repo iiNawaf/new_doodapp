@@ -41,12 +41,12 @@ class _SignInScreenState extends State<SignInScreen> {
                           passwordController: passwordController,
                         )
                       ),
-                      Expanded(
-                        child: FlatButton(
-                          onPressed: (){},
-                          child: Text("Forgot Password?"),
-                        )
-                      ),
+                      // Expanded(
+                      //   child: FlatButton(
+                      //     onPressed: (){},
+                      //     child: Text("Forgot Password?"),
+                      //   )
+                      // ),
                     ],
                   ),
                   SizedBox(height: 20),

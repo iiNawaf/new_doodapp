@@ -34,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                    style: TextStyle(fontSize: 29, fontWeight: FontWeight.bold),
                    ),
                   SizedBox(height: 15,),
-                  SignInUsername(controller: usernameController,),
+                  SignUpUsername(controller: usernameController,),
                   SizedBox(height: 30),
                   SignUpEmail(controller: emailController),
                   SizedBox(height: 30),
