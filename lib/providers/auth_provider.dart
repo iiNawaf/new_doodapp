@@ -32,7 +32,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   // Database operations
-  final usersCollection = FirebaseFirestore.instance.collection('users');
+  final usersCollection = FirebaseFirestore.instance.collection('users_info');
 
   Future createUserData(String id, String email, String username) async {
     await usersCollection.doc(id).set({

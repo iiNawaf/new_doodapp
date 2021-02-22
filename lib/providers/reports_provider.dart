@@ -31,7 +31,7 @@ class ReportsProvider with ChangeNotifier {
     await communityChatReportsCollection.doc(docID).update({
       'status': 'solved'
     });
-    await FirebaseFirestore.instance.collection('users').doc(senderID).update({
+    await FirebaseFirestore.instance.collection('users_info').doc(senderID).update({
       'status' : 'blocked'
     });
   }
@@ -40,7 +40,7 @@ class ReportsProvider with ChangeNotifier {
     await liveChatReportsCollection.doc(docID).update({
       'status': 'solved'
     });
-    await FirebaseFirestore.instance.collection('users').doc(senderID).update({
+    await FirebaseFirestore.instance.collection('users_info').doc(senderID).update({
       'status' : 'blocked'
     });
   }
