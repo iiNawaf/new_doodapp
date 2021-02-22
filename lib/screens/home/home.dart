@@ -38,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final communityProvider = Provider.of<CommunityProvider>(context);
     final authData = Provider.of<AuthProvider>(context);
-    print(authData.user.email);
     return authData.loggedInUser.status == "blocked"
         ? accountBlockedMessage(authData)
         : Scaffold(

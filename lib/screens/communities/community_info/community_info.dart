@@ -24,7 +24,6 @@ class _CommunityInfoScreenState extends State<CommunityInfoScreen> {
   Widget build(BuildContext context) {
     final cp = Provider.of<CommunityProvider>(context);
     final authData = Provider.of<AuthProvider>(context);
-    print('${widget.community.ownerID} - ${authData.loggedInUser.id}');
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),

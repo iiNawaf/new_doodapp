@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:528872969009:android:564a9f2f7b4a41d0795610",
+        "mobilesdk_app_id": "1:528872969009:android:bdbc9695f5edee04795610",
         "android_client_info": {
-          "package_name": "com.example.dood"
+          "package_name": "com.example.doodapp"
         }
       },
       "oauth_client": [

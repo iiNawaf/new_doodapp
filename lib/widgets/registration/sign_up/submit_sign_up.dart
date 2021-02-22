@@ -71,8 +71,6 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
               content: Text("Email address is already exist."),
             ));
           }
-        } else {
-          print("enter inputs");
         }
         setState(() {
           isLoading = false;
