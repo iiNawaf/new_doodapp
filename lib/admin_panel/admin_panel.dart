@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doodapp/models/reports.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/reports_provider.dart';
 import 'package:doodapp/side/appbar.dart';

@@ -46,46 +46,42 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
             ),
           );
   }
-    Future<void> _signUp(String username, AuthProvider auth) {
-    String tempUser = "";
-    FirebaseFirestore.instance
-        .collection('users')
-        .snapshots()
-        .listen((snapshot) async {
-      snapshot.docs.forEach((doc) {
-        if (username == doc.data()['username']) {
-          tempUser = doc.data()['username'];
-        }
-      });
-      if (tempUser != username) {
-        setState(() {
-          isLoading = true;
-        });
-        if (SignUpScreen.formKey.currentState.validate()) {
-          try {
-            await auth.signUp(
-                widget.email.text, widget.password.text, widget.username.text);
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          } catch (e) {
-            SignUpScreen.scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text("Email address is already exist."),
-            ));
-          }
-        }
-        setState(() {
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          isLoading = true;
-        });
-        SignUpScreen.scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text("Username is taken."),
-        ));
-        setState(() {
-          isLoading = false;
+
+  Future<void> _signUp(String username, AuthProvider auth) {
+    try {
+      if (SignUpScreen.formKey.currentState.validate()) {
+        String tempUser = "";
+        FirebaseFirestore.instance
+            .collection('users')
+            .snapshots()
+            .listen((snapshot) async {
+          snapshot.docs.forEach((doc) {
+            if (username == doc.data()['username']) {
+              print(doc.data()['username']);
+            }
+          });
+          print("$tempUser - $username");
+          // if (tempUser != username) {
+          //   setState(() {
+          //     isLoading = true;
+          //   });
+          //   await auth.signUp(
+          //       widget.email.text, widget.password.text, widget.username.text);
+          //   Navigator.of(context).popUntil((route) => route.isFirst);
+          //   setState(() {
+          //     isLoading = false;
+          //   });
+          // } else {
+          //   SignUpScreen.scaffoldKey.currentState.showSnackBar(SnackBar(
+          //     content: Text("Username is taken."),
+          //   ));
+          // }
         });
       }
-    });
+    } catch (e) {
+      SignUpScreen.scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("Email address is already exist. $e"),
+      ));
+    }
   }
 }
