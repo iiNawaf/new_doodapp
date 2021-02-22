@@ -51,14 +51,15 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
     try {
       if (SignUpScreen.formKey.currentState.validate()) {
         String tempUser = "";
-        FirebaseFirestore.instance.collection('users_info').snapshots().listen((snapshot) async {
+        FirebaseFirestore.instance
+            .collection('users_info')
+            .snapshots()
+            .listen((snapshot) async {
           snapshot.docs.forEach((doc) {
-            print(doc.data()['username']);
             if (username == doc.data()['username']) {
               tempUser = doc.data()['username'];
             }
           });
-          print("$tempUser - $username");
           if (tempUser != username) {
             setState(() {
               isLoading = true;
@@ -70,9 +71,14 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
               isLoading = false;
             });
           } else {
-            SignUpScreen.scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text("Username is taken."),
-            ));
+            setState(() {
+              isLoading = false;
+            });
+            Future.delayed(const Duration(milliseconds: 600), () {
+              SignUpScreen.scaffoldKey.currentState.showSnackBar(SnackBar(
+                content: Text("Username is taken."),
+              ));
+            });
           }
         });
       }
