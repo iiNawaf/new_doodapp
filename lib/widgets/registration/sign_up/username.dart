@@ -15,8 +15,8 @@ class SignUpUsername extends StatelessWidget {
             return "Field is empty";
           }else if(!regex.hasMatch(value)){
             return "Please type a valid username";
-          }else if(value.length > 10){
-            return "The maximum length of username is 10!";
+          }else if(value.length > 15){
+            return "The maximum length of username is 15!";
           }else{
             return null;
           }
