@@ -1,6 +1,7 @@
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/home/home.dart';
+import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/widgets/loading/home_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,7 @@ class AppManager extends StatefulWidget {
 class _AppManagerState extends State<AppManager> {
   bool isInit = true;
   bool isLoading = false;
+  bool isBlocked = false;
   @override
   void didChangeDependencies() async {
     try {
@@ -27,9 +29,7 @@ class _AppManagerState extends State<AppManager> {
         //first, fetch user data
         await authProvider.fetchUserData();
         // then, fetch community list
-        await communityProvider.fetchCommunityList().then((v) {
-          
-        });
+        await communityProvider.fetchCommunityList();
         setState(() {
           isLoading = false;
         });
@@ -49,8 +49,11 @@ class _AppManagerState extends State<AppManager> {
 
   @override
   Widget build(BuildContext context) {
+    final authData = Provider.of<AuthProvider>(context);
     return Scaffold(
-      body: isLoading ? HomeLoading() : HomeScreen(),
+      body: isLoading
+          ? HomeLoading()
+          : HomeScreen(),
     );
   }
 }

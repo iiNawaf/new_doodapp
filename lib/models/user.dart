@@ -3,6 +3,8 @@ class UserModel {
   final String email;
   final String username;
   String profileImage;
+  String accountType;
+  String status;
 
-  UserModel({this.id, this.email, this.username, this.profileImage});
+  UserModel({this.status, this.id, this.email, this.username, this.profileImage, this.accountType});
 }

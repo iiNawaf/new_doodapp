@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doodapp/models/live_chat.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/live_chat_provider.dart';
+import 'package:doodapp/providers/reports_provider.dart';
 import 'package:doodapp/shared/utilities.dart';
+import 'package:doodapp/widgets/home/live_chat/report_chat.dart';
 import 'package:doodapp/widgets/loading/general_loading.dart';
 import 'package:doodapp/widgets/loading/image_loading.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,7 @@ class LiveChatList extends StatelessWidget {
   Widget build(BuildContext context) {
     final liveChatProvider = Provider.of<LiveChatProvider>(context);
     final authData = Provider.of<AuthProvider>(context);
+    final cp = Provider.of<ReportsProvider>(context);
     return StreamBuilder<List<LiveChat>>(
       stream: liveChatProvider.loadLiveChat,
       builder: (context, snapshot) {
@@ -60,7 +63,7 @@ class LiveChatList extends StatelessWidget {
                     ),
                     placeholder: (context, url) => ImageLoading(),
                     errorWidget: (context, url, error) => Icon(Icons.error),
-                  ) : Container(),
+                  ) : ReportChat(liveChat: snapshot.data[index]),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(5),

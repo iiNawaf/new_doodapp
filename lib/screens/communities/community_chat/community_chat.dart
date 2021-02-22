@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 class CommunityChatScreen extends StatefulWidget {
   static String routeName = "/screens/communities/community_chat.dart";
   static GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   Community community;
   CommunityChatScreen({this.community});
 
@@ -23,6 +24,7 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
   Widget build(BuildContext context) {
     final cp = Provider.of<CommunityProvider>(context);
     return Scaffold(
+      key: CommunityChatScreen.scaffoldKey,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: ApplicationBar(

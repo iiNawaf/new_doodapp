@@ -1,3 +1,4 @@
+import 'package:doodapp/admin_panel/admin_panel.dart';
 import 'package:doodapp/models/community.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
@@ -14,9 +15,10 @@ class ApplicationBar extends StatelessWidget {
   bool isCommunityChat;
   bool isCommunityInfo;
   bool isLiveChat;
+  bool isAdminPanel;
   String title;
   Community community;
-  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo, this.isLiveChat});
+  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo, this.isLiveChat, this.isAdminPanel});
   @override
   Widget build(BuildContext context) {
     final authData = Provider.of<AuthProvider>(context);
@@ -24,6 +26,9 @@ class ApplicationBar extends StatelessWidget {
     return AppBar(
       elevation: 0,
       title: Text(title),
+      leading: authData.loggedInUser.accountType == "admin" && isAdminPanel != true && isHome == true
+      ? IconButton(icon: Icon(Icons.admin_panel_settings_outlined), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPanelScreen())),)
+      : null,
       actions: [
         isHome == true
             ? IconButton(

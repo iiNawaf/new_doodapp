@@ -4,9 +4,14 @@ import 'package:doodapp/screens/registration/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AuthWrapper extends StatelessWidget {
+class AuthWrapper extends StatefulWidget {
   static String routeName = '/screens/wrapper/auth_wrapper.dart';
-  
+
+  @override
+  _AuthWrapperState createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends State<AuthWrapper> {
   @override
   Widget build(BuildContext context) {
     final authData = Provider.of<AuthProvider>(context);

@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController liveChatController = TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = false;
+  bool isInit = true;
 
   @override
   void dispose() {
@@ -37,122 +38,132 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final communityProvider = Provider.of<CommunityProvider>(context);
     final authData = Provider.of<AuthProvider>(context);
-    // authData.signOut();
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: ApplicationBar(isHome: true, title: "Dood"),
-      ),
-      body: isLoading
-          ? GeneralLoading()
-          : RefreshIndicator(
-              onRefresh: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                HomeScreen.userImage = null;
-                await authData.fetchUserData();
-                await communityProvider.fetchCommunityList();
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              child: ListView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                shrinkWrap: true,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    height: 250,
-                    color: appColor.withOpacity(0.1),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                            UserImage(scaffoldKey: _scaffoldKey),
-                            SizedBox(width: 10),
-                            Column(
+    print(authData.user.email);
+    return authData.loggedInUser.status == "blocked"
+        ? accountBlockedMessage(authData)
+        : Scaffold(
+            key: _scaffoldKey,
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(60),
+              child: ApplicationBar(isHome: true, title: "Dood"),
+            ),
+            body: isLoading
+                ? GeneralLoading()
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      HomeScreen.userImage = null;
+                      await authData.fetchUserData();
+                      await communityProvider.fetchCommunityList();
+                      setState(() {
+                        isLoading = false;
+                      });
+                    },
+                    child: ListView(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      shrinkWrap: true,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          height: 250,
+                          color: appColor.withOpacity(0.1),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Welcome",
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold)),
-                                Username(username: authData.loggedInUser.username),
-                              ],
-                            )
-                          ]),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _liveChatButton(context),
-                              _signOutButton(context, authData)
-                            ],
-                          )
-                        ]),
-                  ),
-                  
-                  // Communities
-                  _communityTitle(context, communityProvider.communityList),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: communityProvider.communityList.isEmpty
-                        ? Center(
-                            child: Text("No communities available."),
-                          )
-                        : Container(
-                            height: 150,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount:
-                                  communityProvider.communityList.length > 10
-                                      ? 10
-                                      : communityProvider.communityList.length,
-                              itemBuilder: (context, index) {
-                                return CommunitiesList(
-                                    community:
-                                        communityProvider.communityList[index]);
-                              },
-                            ),
-                          ),
-                  ),
+                                Row(children: [
+                                  UserImage(scaffoldKey: _scaffoldKey),
+                                  SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Welcome",
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold)),
+                                      Username(
+                                          username:
+                                              authData.loggedInUser.username),
+                                    ],
+                                  )
+                                ]),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    _liveChatButton(context),
+                                    _signOutButton(context, authData)
+                                  ],
+                                )
+                              ]),
+                        ),
 
-                  // my community
-                  _myCommunityTitle(),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: communityProvider.communityList.isEmpty
-                        ? Center(
-                            child: Text("No communities available."),
-                          )
-                        : Container(
-                            height: 150,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 1,
-                              itemBuilder: (context, index) {
-                                int ownerIndex = communityProvider.communityList
-                                    .indexWhere((com) =>
-                                        com.ownerID ==
-                                        authData.loggedInUser.id);
-                                return ownerIndex == -1
-                                    ? Text("You don't have a community.")
-                                    : CommunitiesList(
-                                        community: communityProvider
-                                            .communityList[ownerIndex]);
-                              },
-                            ),
-                          ),
+                        // Communities
+                        _communityTitle(
+                            context, communityProvider.communityList),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: communityProvider.communityList.isEmpty
+                              ? Center(
+                                  child: Text("No communities available."),
+                                )
+                              : Container(
+                                  height: 150,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount:
+                                        communityProvider.communityList.length >
+                                                10
+                                            ? 10
+                                            : communityProvider
+                                                .communityList.length,
+                                    itemBuilder: (context, index) {
+                                      return CommunitiesList(
+                                          community: communityProvider
+                                              .communityList[index]);
+                                    },
+                                  ),
+                                ),
+                        ),
+
+                        // my community
+                        _myCommunityTitle(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: communityProvider.communityList.isEmpty
+                              ? Center(
+                                  child: Text("No communities available."),
+                                )
+                              : Container(
+                                  height: 150,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 1,
+                                    itemBuilder: (context, index) {
+                                      int ownerIndex = communityProvider
+                                          .communityList
+                                          .indexWhere((com) =>
+                                              com.ownerID ==
+                                              authData.loggedInUser.id);
+                                      return ownerIndex == -1
+                                          ? Text("You don't have a community.")
+                                          : CommunitiesList(
+                                              community: communityProvider
+                                                  .communityList[ownerIndex]);
+                                    },
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-    );
+          );
   }
 }
 
@@ -242,12 +253,13 @@ Widget _signOutButton(BuildContext context, AuthProvider authData) {
 
 Widget _liveChatButton(BuildContext context) {
   return GestureDetector(
-    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LiveChatScreen())),
+    onTap: () => Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LiveChatScreen())),
     child: Container(
       height: 50,
       width: 100,
-      decoration:
-          BoxDecoration(color: appColor, borderRadius: BorderRadius.circular(5)),
+      decoration: BoxDecoration(
+          color: appColor, borderRadius: BorderRadius.circular(5)),
       child: Center(
           child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -260,5 +272,37 @@ Widget _liveChatButton(BuildContext context) {
         ],
       )),
     ),
+  );
+}
+
+Widget accountBlockedMessage(AuthProvider authData) {
+  return Scaffold(
+    body: Center(
+        child: Container(
+      padding: EdgeInsets.all(15),
+      height: 250,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            "Unfortunately, your account is blocked!",
+          ),
+          GestureDetector(
+            onTap: () => authData.signOut(),
+            child: Container(
+              height: 50,
+              width: 100,
+              decoration: BoxDecoration(
+                  color: appColor, borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                  child: Text("Go back",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold))),
+            ),
+          )
+        ],
+      ),
+    )),
   );
 }

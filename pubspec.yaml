@@ -38,6 +38,7 @@ dependencies:
   firebase_storage: ^7.0.0
   cached_network_image:
   email_validator:
+  connectivity: ^2.0.2
   flutter_localizations:
     sdk: flutter
 

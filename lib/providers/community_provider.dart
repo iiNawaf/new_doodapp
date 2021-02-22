@@ -100,18 +100,9 @@ class CommunityProvider with ChangeNotifier {
   Future<void> deleteCommunity(String communityID) async {
     await communityCollection.doc(communityID).update({
       "status": "deleted"
+    }).then((e){
+      fetchCommunityList();
     });
-    // await communityCollection.doc(communityID).delete();
-    // final snapshot = await communityChatCollection.get();
-    // String chatID;
-    // String commID;
-    // snapshot.docs.forEach((chat){
-    //   chatID = chat.data()['id'];
-    //   commID = chat.data()['community_id'];
-    // });
-    // if(communityID == commID){
-    //   await communityChatCollection.doc(chatID).delete();
-    // }
   }
   
 }

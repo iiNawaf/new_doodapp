@@ -69,7 +69,7 @@ class _DeleteCommunityState extends State<DeleteCommunity> {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  cp.fetchCommunityList();
+                                  // cp.fetchCommunityList();
                                   Navigator.popUntil(
                                       context, (route) => route.isFirst);
                                 },

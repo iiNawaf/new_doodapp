@@ -1,6 +1,8 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/providers/live_chat_provider.dart';
+import 'package:doodapp/providers/reports_provider.dart';
 import 'package:doodapp/screens/communities/community_chat/community_chat.dart';
 import 'package:doodapp/screens/communities/create_new_community/create_new_community.dart';
 import 'package:doodapp/screens/home/all_communities.dart';
@@ -9,6 +11,7 @@ import 'package:doodapp/screens/home/home.dart';
 import 'package:doodapp/screens/registration/sign_in.dart';
 import 'package:doodapp/screens/registration/sign_up.dart';
 import 'package:doodapp/shared/utilities.dart';
+import 'package:doodapp/widgets/loading/general_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +41,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider.value(
           value: LiveChatProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: ReportsProvider(),
         ),
       ],
       child: GestureDetector(
@@ -78,12 +84,25 @@ class _MyAppState extends State<MyApp> {
               SignInScreen.routeName: (context) => SignInScreen(),
               SignUpScreen.routeName: (context) => SignUpScreen(),
               CreateNewCommunity.routeName: (context) => CreateNewCommunity(),
-              AllCommunitiesScreen.routeName: (context) =>
-                  AllCommunitiesScreen(),
+              AllCommunitiesScreen.routeName: (context) => AllCommunitiesScreen(),
               CommunityChatScreen.routeName: (context) => CommunityChatScreen(),
             },
-            home: AuthWrapper()),
+            home: FutureBuilder<ConnectivityResult>(
+              future: _buildAppStatus(),
+              builder: (context, snapshot){
+                if(snapshot.connectionState == ConnectionState.waiting) return GeneralLoading();
+                if(!snapshot.hasData) return Center(child: Text("No data"));
+                return snapshot.data == ConnectivityResult.none 
+                ? Center(child: Text("No network connection."),) 
+                : AuthWrapper();
+              },
+            )
+            ),
       ),
     );
   }
 }
+
+   Future<ConnectivityResult> _buildAppStatus() async{
+    return await Connectivity().checkConnectivity();
+  }

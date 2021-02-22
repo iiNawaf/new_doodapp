@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 
 class LiveChatScreen extends StatelessWidget {
   TextEditingController messageController = TextEditingController();
+  static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: LiveChatScreen.scaffoldKey,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: ApplicationBar(isLiveChat: true, title: "Dood Live Chat"),
