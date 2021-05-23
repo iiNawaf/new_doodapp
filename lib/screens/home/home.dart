@@ -92,9 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ]),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.start,
                                   children: [
-                                    _liveChatButton(context),
                                     _signOutButton(context, authData)
                                   ],
                                 )
@@ -111,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text("No communities available."),
                                 )
                               : Container(
-                                  height: 150,
+                                  height: 160,
                                   child: ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
@@ -247,30 +246,6 @@ Widget _signOutButton(BuildContext context, AuthProvider authData) {
             );
           });
     },
-  );
-}
-
-Widget _liveChatButton(BuildContext context) {
-  return GestureDetector(
-    onTap: () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LiveChatScreen())),
-    child: Container(
-      height: 50,
-      width: 100,
-      decoration: BoxDecoration(
-          color: appColor, borderRadius: BorderRadius.circular(5)),
-      child: Center(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Icon(Icons.chat_bubble_outline, color: Colors.white),
-          Text(
-            "Live Chat",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ],
-      )),
-    ),
   );
 }
 
