@@ -46,7 +46,7 @@ class _SubmitSignInState extends State<SubmitSignIn> {
                 });
       },
       child: Container(
-        height: 50,
+        height: 60,
         decoration: BoxDecoration(
           color: appColor,
           borderRadius: BorderRadius.circular(10),
@@ -55,7 +55,7 @@ class _SubmitSignInState extends State<SubmitSignIn> {
           child: Text(
             "Sign In",
             style: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
       ),

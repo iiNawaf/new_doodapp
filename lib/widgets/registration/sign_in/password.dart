@@ -1,3 +1,4 @@
+import 'package:doodapp/shared/utilities.dart';
 import 'package:flutter/material.dart';
 
 class SignInPassword extends StatelessWidget {
@@ -12,7 +13,9 @@ class SignInPassword extends StatelessWidget {
         obscureText: true,
         decoration: InputDecoration(
             labelText: "Password",
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+            labelStyle: TextStyle(color: subtextColor),
+            suffixIcon: Icon(Icons.lock, color: subtextColor),
+            ),
       ),
     );
   }

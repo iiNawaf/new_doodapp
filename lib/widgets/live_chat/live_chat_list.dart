@@ -5,7 +5,7 @@ import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/live_chat_provider.dart';
 import 'package:doodapp/providers/reports_provider.dart';
 import 'package:doodapp/shared/utilities.dart';
-import 'package:doodapp/widgets/home/live_chat/report_chat.dart';
+import 'package:doodapp/widgets/live_chat/report_chat.dart';
 import 'package:doodapp/widgets/loading/general_loading.dart';
 import 'package:doodapp/widgets/loading/image_loading.dart';
 import 'package:flutter/material.dart';

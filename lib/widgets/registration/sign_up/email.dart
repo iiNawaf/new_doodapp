@@ -1,3 +1,4 @@
+import 'package:doodapp/shared/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
@@ -21,8 +22,9 @@ class SignUpEmail extends StatelessWidget {
         },
         decoration: InputDecoration(
             labelText: "Email",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+            labelStyle: TextStyle(color: subtextColor),
+            suffixIcon: Icon(Icons.email, color: subtextColor),
+            ),
       ),
     );
   }

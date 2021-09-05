@@ -1,6 +1,6 @@
 import 'package:doodapp/side/appbar.dart';
-import 'package:doodapp/widgets/home/live_chat/live_chat_input.dart';
-import 'package:doodapp/widgets/home/live_chat/live_chat_list.dart';
+import 'package:doodapp/widgets/live_chat/live_chat_input.dart';
+import 'package:doodapp/widgets/live_chat/live_chat_list.dart';
 import 'package:flutter/material.dart';
 
 class LiveChatScreen extends StatelessWidget {

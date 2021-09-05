@@ -1,8 +1,8 @@
-import 'package:doodapp/models/live_chat.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/home/home.dart';
 import 'package:doodapp/screens/live_chat/live_chat.dart';
+import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/widgets/loading/home_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -54,28 +54,51 @@ class _AppManagerState extends State<AppManager> {
     });
   }
 
+  List<Widget> screens = [
+    HomeScreen(),
+
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: _onItemTapped,
-        items: [
-          BottomNavigationBarItem(
-            title: Text("Home"),
-            icon: Icon(Icons.home)
-          ),
-          BottomNavigationBarItem(
-            title: Text("Live Chat"),
-            icon: Icon(Icons.chat)
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: subtextColor, width: 1)
           )
-        ]
+        ),
+        child: BottomNavigationBar(
+          currentIndex: selectedIndex,
+          backgroundColor: bgColor,
+          showUnselectedLabels: false,
+          type: BottomNavigationBarType.fixed,
+          onTap: _onItemTapped,
+          items: [
+            BottomNavigationBarItem(
+              backgroundColor: bgColor,
+              title: Text(""),
+              icon: Image.asset('./assets/images/home.png', height: 25),
+            ),
+            BottomNavigationBarItem(
+              title: Text(""),
+              icon: Image.asset('./assets/images/message.png', height: 25)
+            ),
+            BottomNavigationBarItem(
+              title: Text(""),
+              icon: Image.asset('./assets/images/compass.png', height: 25)
+            ),
+            BottomNavigationBarItem(
+              title: Text(""),
+              icon: Image.asset('./assets/images/settings.png', height: 25)
+            ),
+            
+          ]
+        ),
       ),
       body: isLoading
           ? HomeLoading()
-          : selectedIndex == 0 
-          ? HomeScreen() 
-          : LiveChatScreen(),
+          : screens.elementAt(selectedIndex)
     );
   }
 }

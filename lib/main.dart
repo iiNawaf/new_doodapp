@@ -51,10 +51,10 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              fontFamily: 'Cairo',
+              fontFamily: 'Ubuntu',
               primaryColor: appColor,
+              scaffoldBackgroundColor: bgColor,
               cursorColor: Colors.grey,
-              scaffoldBackgroundColor: Color(0xffd9d9d9),
               iconTheme: IconThemeData(color: Colors.pink),
               appBarTheme: AppBarTheme(
                 elevation: 0,

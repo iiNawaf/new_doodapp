@@ -1,3 +1,4 @@
+import 'package:doodapp/shared/utilities.dart';
 import 'package:flutter/material.dart';
 
 class SignUpRePassword extends StatelessWidget {
@@ -11,8 +12,9 @@ class SignUpRePassword extends StatelessWidget {
         validator: (value) => value != passwordContoller.text ? "Password does not match" : null,
         decoration: InputDecoration(
             labelText: "Re-Password",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+            labelStyle: TextStyle(color: subtextColor),
+            suffixIcon: Icon(Icons.lock, color: subtextColor)
+            ),
       ),
     );
   }

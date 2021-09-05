@@ -1,33 +1,32 @@
 import 'package:doodapp/shared/utilities.dart';
 import 'package:flutter/material.dart';
 
-class SignUpUsername extends StatelessWidget {
+class PhoneNumber extends StatelessWidget {
   TextEditingController controller;
-  SignUpUsername({this.controller});
+  PhoneNumber({this.controller});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: TextFormField(
+        maxLength: 10,
         controller: controller,
         validator: (value) {
-            Pattern pattern = r'^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$';
-            RegExp regex = RegExp(pattern);
           if(value.isEmpty){
             return "Field is empty";
-          }else if(!regex.hasMatch(value)){
-            return "Please type a valid username";
-          }else if(value.length > 15){
-            return "The maximum length of username is 15!";
+          }else if(!value.startsWith("05") || value.length != 10){
+            return "Please type a valid phone number";
           }else{
             return null;
           }
         },
         decoration: InputDecoration(
-            labelText: "Username",
+            labelText: "Phone Number",
             labelStyle: TextStyle(color: subtextColor),
-            suffixIcon: Icon(Icons.person, color: subtextColor)
-            ),
+            suffixIcon: Icon(Icons.phone, color: subtextColor),
+            counterText: ""
       ),
+      )
     );
   }
 }

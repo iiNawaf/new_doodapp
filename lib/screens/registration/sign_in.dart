@@ -22,46 +22,69 @@ class _SignInScreenState extends State<SignInScreen> {
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: SignInScreen.formKey,
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Sign In", style: TextStyle(fontSize: 29, fontWeight: FontWeight.bold),),
-                  SizedBox(height: 15),
-                  SignInEmail(controller: emailController),
-                  SizedBox(height: 30),
-                  SignInPassword(controller: passwordController),
-                  SizedBox(height: 15),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SubmitSignIn(
-                          emailController: emailController,
-                          passwordController: passwordController,
-                        )
-                      ),
-                      // Expanded(
-                      //   child: FlatButton(
-                      //     onPressed: (){},
-                      //     child: Text("Forgot Password?"),
-                      //   )
-                      // ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FlatButton(
-                        onPressed: () => Navigator.pushNamed(context, SignUpScreen.routeName),
-                        child: Text("You don't have an account?", style: TextStyle(color: appColor, fontSize: 15, fontWeight: FontWeight.bold),)
-                      )
-                    ],
-                  )
-                ],
+          child: ListView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              SizedBox(
+                height: 50,
               ),
-            ),
+              Text(
+                "Welcome To ",
+                style: TextStyle(fontSize: 40),
+              ),
+              Text(
+                "DoodApp",
+                style: TextStyle(
+                    color: appColor, fontSize: 40, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 120),
+              Column(
+                  children: [
+                    SignInEmail(controller: emailController),
+                    SizedBox(height: 15),
+                    SignInPassword(controller: passwordController),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            "Forgot Password?",
+                            style: TextStyle(color: appColor, fontSize: 15),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 40),
+                    SubmitSignIn(
+                      emailController: emailController,
+                      passwordController: passwordController,
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don't have an account? ",
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        GestureDetector(
+                            onTap: () => Navigator.pushNamed(
+                                context, SignUpScreen.routeName),
+                            child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                  color: appColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline),
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+            ],
           ),
         ),
       ),
