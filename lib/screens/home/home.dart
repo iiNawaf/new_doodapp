@@ -9,9 +9,12 @@ import 'package:doodapp/shared/custom_dialog.dart';
 import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/side/appbar.dart';
 import 'package:doodapp/widgets/home/community_list/communities_list.dart';
+import 'package:doodapp/widgets/home/home_carousel.dart';
+import 'package:doodapp/widgets/home/recent_communities_list.dart';
 import 'package:doodapp/widgets/home/user_image.dart';
 import 'package:doodapp/widgets/home/username.dart';
 import 'package:doodapp/widgets/loading/general_loading.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,145 +45,68 @@ class _HomeScreenState extends State<HomeScreen> {
         ? accountBlockedMessage(authData)
         : Scaffold(
             key: _scaffoldKey,
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(60),
-              child: ApplicationBar(isHome: true, title: "Dood"),
+            body: SingleChildScrollView(
+              padding: EdgeInsets.zero,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  HomeCarousel(),
+                  _liveChatBtn(context),
+                  // recent communities
+                  _recentCommunitiesText(
+                      context, communityProvider.communityList),
+                  RecentCommunitiesList(communityProvider.communityList),
+                ],
+              ),
             ),
-            body: isLoading
-                ? GeneralLoading()
-                : RefreshIndicator(
-                    onRefresh: () async {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      HomeScreen.userImage = null;
-                      await authData.fetchUserData();
-                      await communityProvider.fetchCommunityList();
-                      setState(() {
-                        isLoading = false;
-                      });
-                    },
-                    child: ListView(
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                      shrinkWrap: true,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          height: 250,
-                          color: appColor.withOpacity(0.1),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(children: [
-                                  UserImage(scaffoldKey: _scaffoldKey),
-                                  SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Welcome",
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold)),
-                                      Username(
-                                          username:
-                                              authData.loggedInUser.username),
-                                    ],
-                                  )
-                                ]),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                  children: [
-                                    _signOutButton(context, authData)
-                                  ],
-                                )
-                              ]),
-                        ),
-
-                        // Communities
-                        _communityTitle(
-                            context, communityProvider.communityList),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: communityProvider.communityList.isEmpty
-                              ? Center(
-                                  child: Text("No communities available."),
-                                )
-                              : Container(
-                                  height: 160,
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount:
-                                        communityProvider.communityList.length >
-                                                10
-                                            ? 10
-                                            : communityProvider
-                                                .communityList.length,
-                                    itemBuilder: (context, index) {
-                                      return CommunitiesList(
-                                          community: communityProvider
-                                              .communityList[index]);
-                                    },
-                                  ),
-                                ),
-                        ),
-
-                        // my community
-                        _myCommunityTitle(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: communityProvider.communityList.isEmpty
-                              ? Center(
-                                  child: Text("No communities available."),
-                                )
-                              : Container(
-                                  height: 150,
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: 1,
-                                    itemBuilder: (context, index) {
-                                      int ownerIndex = communityProvider
-                                          .communityList
-                                          .indexWhere((com) =>
-                                              com.ownerID ==
-                                              authData.loggedInUser.id);
-                                      return ownerIndex == -1
-                                          ? Text("You don't have a community.")
-                                          : CommunitiesList(
-                                              community: communityProvider
-                                                  .communityList[ownerIndex]);
-                                    },
-                                  ),
-                                ),
-                        ),
-                      ],
-                    ),
-                  ),
           );
   }
 }
 
-Widget _communityTitle(BuildContext context, List<Community> communities) {
+Widget _liveChatBtn(BuildContext context) {
+  return GestureDetector(
+    onTap: () => Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => LiveChatScreen())),
+    child: Container(
+        padding: EdgeInsets.only(left: 8, right: 8),
+        height: 50,
+        color: appColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Join DoodApp Live Chat",
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xffffffff),
+                  fontWeight: FontWeight.bold),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Color(0xffffffff),
+            )
+          ],
+        )),
+  );
+}
+
+Widget _recentCommunitiesText(
+    BuildContext context, List<Community> communities) {
   return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Communities",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            "Recent Communities",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           GestureDetector(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     AllCommunitiesScreen(communities: communities))),
             child: Text(
-              "Show more",
+              "Show All",
               style: TextStyle(color: appColor, fontWeight: FontWeight.bold),
             ),
           ),
@@ -195,58 +121,6 @@ Widget _myCommunityTitle() {
         "My Community",
         style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       ));
-}
-
-Widget _signOutButton(BuildContext context, AuthProvider authData) {
-  return GestureDetector(
-    child: Container(
-      height: 50,
-      width: 100,
-      decoration: BoxDecoration(
-          color: Colors.grey, borderRadius: BorderRadius.circular(5)),
-      child: Center(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Icon(Icons.logout),
-          Text(
-            "Sign out",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ],
-      )),
-    ),
-    onTap: () {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AppAlertDialog(
-              title: Text(
-                "Sign out",
-                style: TextStyle(fontSize: 21),
-              ),
-              content: Text("Are you sure you want to sign out?"),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        authData.signOut();
-                        Navigator.pop(context);
-                      },
-                      child: Text("Sign out")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Text("Cancel")),
-                ),
-              ],
-            );
-          });
-    },
-  );
 }
 
 Widget accountBlockedMessage(AuthProvider authData) {
