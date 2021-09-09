@@ -2,18 +2,21 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doodapp/models/community.dart';
+import 'package:doodapp/models/user.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class CommunityProvider with ChangeNotifier {
-  DocumentReference docRef;
+  DocumentReference communityRef;
   final communityCollection =
       FirebaseFirestore.instance.collection('communities');
   final communityChatCollection =
       FirebaseFirestore.instance.collection('community_chat');
+  final userCollection = FirebaseFirestore.instance.collection('users_info');
 
   List<Community> communityList = [];
   Community community;
+  UserModel currentUser;
 
   Future<void> fetchCommunityList() async {
     QuerySnapshot snapshot = await communityCollection.where("status", isEqualTo: "available").get();
@@ -27,6 +30,7 @@ class CommunityProvider with ChangeNotifier {
         bio: snap.data()['bio'],
         ownerID: snap.data()['owner_id'],
         status: snap.data()['status'],
+        lastMessage: snap.data()['last_message']
       );
       communityList.add(community);
     });
@@ -35,26 +39,27 @@ class CommunityProvider with ChangeNotifier {
 
   Future<void> createCommunity(String title, String bio, String ownerID,
       File image, String username, String email, String profileImage) async {
-    docRef = communityCollection.doc();
+    communityRef = communityCollection.doc();
     String imgUrl;
     Reference reference =
-        FirebaseStorage.instance.ref().child('communityImages/${docRef.id}');
+        FirebaseStorage.instance.ref().child('communityImages/${communityRef.id}');
     await reference.putFile(image).whenComplete(() async {
       await reference.getDownloadURL().then((value) {
         imgUrl = value;
       });
     });
 
-    await docRef
+    await communityRef
         .set({
-          'id': docRef.id,
+          'id': communityRef.id,
           'title': title,
           'bio': bio,
           'owner_id': ownerID,
           'image': imgUrl == ""
               ? "https://firebasestorage.googleapis.com/v0/b/doodapp-ebf46.appspot.com/o/default_community_image.jpg?alt=media&token=3cd34fb7-e2d6-47ec-81fc-1c2041c6ef46"
               : imgUrl,
-          'status': "available"
+          'status': "available",
+          'last_message': ""
         })
         .then((value) => print("Done"))
         .catchError((error) => print("Failed to create community!"));
@@ -68,14 +73,24 @@ class CommunityProvider with ChangeNotifier {
       String communityTitle,
       String communityImage,
       String communityBio) async {
-    docRef = communityChatCollection.doc();
-    await docRef.set({
-      'id': docRef.id,
+    communityRef = communityChatCollection.doc();
+    await communityRef.set({
+      'id': communityRef.id,
       'sender_id': senderID,
       'sender': sender,
       'community_id': communityID,
       'content': content,
       'timestamp': FieldValue.serverTimestamp(),
+    });
+    
+    //update last message in community
+    await communityCollection.doc(communityID).update({
+      'last_message': content
+    });
+
+    // add community to user joined communities
+    await userCollection.doc(senderID).update({
+      'communities_joined': FieldValue.arrayUnion([communityID]),
     });
   }
 
@@ -98,11 +113,10 @@ class CommunityProvider with ChangeNotifier {
       .map(_communityChatList);
 
   Future<void> deleteCommunity(String communityID) async {
-    await communityCollection.doc(communityID).update({
-      "status": "deleted"
-    }).then((e){
+    await communityCollection.doc(communityID).delete().then((e){
       fetchCommunityList();
     });
+    
   }
   
 }

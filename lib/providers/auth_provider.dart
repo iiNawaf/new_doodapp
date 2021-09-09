@@ -43,6 +43,7 @@ class AuthProvider with ChangeNotifier {
           'https://firebasestorage.googleapis.com/v0/b/doodapp-ebf46.appspot.com/o/users_images%2F23848476-cute-pink-worm-cartoon.jpg?alt=media&token=f3a1d4c3-3bf0-4485-9af6-905e040841b8',
       'account_type': 'normal_user',
       'status': 'active',
+      'communities_joined': []
     });
   }
 
@@ -55,6 +56,7 @@ class AuthProvider with ChangeNotifier {
       profileImage: snapshot.data()['profile_image'],
       accountType: snapshot.data()['account_type'],
       status: snapshot.data()['status'],
+      communitiesJoined: snapshot.data()['communities_joined'],
     );
   }
 

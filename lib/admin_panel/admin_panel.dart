@@ -14,7 +14,7 @@ class AdminPanelScreen extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
-        child: ApplicationBar(isAdminPanel: true, title: "Admin Panel",),
+        child: ApplicationBar(),
       ),
       body: authData.loggedInUser.accountType != "admin"
       ? Center(child: Text("Unauthorized access!"),) 

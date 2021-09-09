@@ -9,22 +9,27 @@ class ShowAllCommunities extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-            padding: const EdgeInsets.all(15),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CommunityChatScreen(community: community))),
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => CommunityChatScreen(community: community))),
               child: Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  children: [
-                    ClipRRect(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: CachedImage(url: community.image),
-                  ),
-                  Text("${community.title}")
-                  ],
-                )
+                ),
+                height: 190,
+                width: 110,
               ),
             ),
-          );
+          Text("${community.title}", overflow: TextOverflow.ellipsis,)
+        ],
+      ),
+    );
   }
 }

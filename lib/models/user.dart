@@ -1,3 +1,4 @@
+
 class UserModel {
   final String id;
   final String email;
@@ -5,6 +6,14 @@ class UserModel {
   String profileImage;
   String accountType;
   String status;
+  List<dynamic> communitiesJoined;
 
-  UserModel({this.status, this.id, this.email, this.username, this.profileImage, this.accountType});
+  UserModel(
+      {this.status,
+      this.id,
+      this.email,
+      this.username,
+      this.profileImage,
+      this.accountType,
+      this.communitiesJoined});
 }

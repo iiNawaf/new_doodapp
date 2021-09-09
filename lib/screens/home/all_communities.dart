@@ -59,8 +59,8 @@ class _AllCommunitiesScreenState extends State<AllCommunitiesScreen> {
           GridView.builder(
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 1,
-                crossAxisCount: 2,
+                childAspectRatio: 0.6,
+                crossAxisCount: 3,
               ),
               itemCount: searchedItems.length,
               itemBuilder: (BuildContext context, int index) {

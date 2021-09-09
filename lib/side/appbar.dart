@@ -1,34 +1,56 @@
-import 'package:doodapp/admin_panel/admin_panel.dart';
 import 'package:doodapp/models/community.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/communities/community_info/community_info.dart';
 import 'package:doodapp/screens/communities/create_new_community/create_new_community.dart';
+import 'package:doodapp/shared/cached_image.dart';
 import 'package:doodapp/shared/custom_dialog.dart';
+import 'package:doodapp/shared/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ApplicationBar extends StatelessWidget {
   bool isHome;
+  bool isAppManager;
   bool isCreateNewCommunity;
   bool isAllCommunities;
   bool isCommunityChat;
   bool isCommunityInfo;
-  bool isLiveChat;
-  bool isAdminPanel;
   String title;
   Community community;
-  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo, this.isLiveChat, this.isAdminPanel});
+  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo, this.isAppManager});
   @override
   Widget build(BuildContext context) {
     final authData = Provider.of<AuthProvider>(context);
     final cp = Provider.of<CommunityProvider>(context);
     return AppBar(
-      elevation: 0,
-      title: Text(title),
-      leading: authData.loggedInUser.accountType == "admin" && isAdminPanel != true && isHome == true
-      ? IconButton(icon: Icon(Icons.admin_panel_settings_outlined), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPanelScreen())),)
-      : null,
+      bottom: PreferredSize(
+      child: Column(
+        children: [
+          SizedBox(height: 10),
+          Container(
+         color: subtextColor,
+         height: 1.0,
+      ),
+        ],
+      ),
+      preferredSize: Size.fromHeight(1.0)
+      ),
+      title: Row(
+        children: [
+          isAppManager == true ? Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: appColor, width: 2)
+            ),
+            height: 45,
+            width: 45,
+            child: CachedImage(url: authData.loggedInUser.profileImage),
+          ) : Container(),
+          isAppManager == true ? SizedBox(width: 10) : Container(),
+          Text(title, style: TextStyle(color: titleColor, fontSize: 24))
+        ],
+      ),
+      
       actions: [
         isHome == true
             ? IconButton(

@@ -4,17 +4,10 @@ import 'package:doodapp/models/community.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/home/all_communities.dart';
-import 'package:doodapp/screens/live_chat/live_chat.dart';
-import 'package:doodapp/shared/custom_dialog.dart';
 import 'package:doodapp/shared/utilities.dart';
-import 'package:doodapp/side/appbar.dart';
-import 'package:doodapp/widgets/home/community_list/communities_list.dart';
 import 'package:doodapp/widgets/home/home_carousel.dart';
+import 'package:doodapp/widgets/home/my_community_list.dart';
 import 'package:doodapp/widgets/home/recent_communities_list.dart';
-import 'package:doodapp/widgets/home/user_image.dart';
-import 'package:doodapp/widgets/home/username.dart';
-import 'package:doodapp/widgets/loading/general_loading.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,9 +44,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   HomeCarousel(),
-                  _liveChatBtn(context),
+                  // my community
+                  _myCommunityTitle(),
+                  MyCommunityList(communityProvider.communityList, authData.loggedInUser),
                   // recent communities
-                  _recentCommunitiesText(
+                  _recentCommunitiesTitle(
                       context, communityProvider.communityList),
                   RecentCommunitiesList(communityProvider.communityList),
                 ],
@@ -63,34 +58,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Widget _liveChatBtn(BuildContext context) {
-  return GestureDetector(
-    onTap: () => Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => LiveChatScreen())),
-    child: Container(
-        padding: EdgeInsets.only(left: 8, right: 8),
-        height: 50,
-        color: appColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Join DoodApp Live Chat",
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xffffffff),
-                  fontWeight: FontWeight.bold),
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Color(0xffffffff),
-            )
-          ],
-        )),
-  );
+Widget _myCommunityTitle() {
+  return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Text(
+            "My Community",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ));
 }
 
-Widget _recentCommunitiesText(
+Widget _recentCommunitiesTitle(
     BuildContext context, List<Community> communities) {
   return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -111,15 +92,6 @@ Widget _recentCommunitiesText(
             ),
           ),
         ],
-      ));
-}
-
-Widget _myCommunityTitle() {
-  return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        "My Community",
-        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       ));
 }
 

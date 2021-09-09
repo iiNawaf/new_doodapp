@@ -1,8 +1,9 @@
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
+import 'package:doodapp/screens/message/message_list.dart';
 import 'package:doodapp/screens/home/home.dart';
-import 'package:doodapp/screens/live_chat/live_chat.dart';
 import 'package:doodapp/shared/utilities.dart';
+import 'package:doodapp/side/appbar.dart';
 import 'package:doodapp/widgets/loading/home_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -56,12 +57,26 @@ class _AppManagerState extends State<AppManager> {
 
   List<Widget> screens = [
     HomeScreen(),
+    MessageListScreen(),
 
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: isLoading 
+      ? AppBar() 
+      : PreferredSize(
+        preferredSize: Size.fromHeight(65),
+        child: ApplicationBar(
+          isAppManager: true,
+          title: selectedIndex == 0 
+          ? "Home" 
+          : selectedIndex == 1 
+          ? "Messages" 
+          : "",
+          ),
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
@@ -71,25 +86,31 @@ class _AppManagerState extends State<AppManager> {
         child: BottomNavigationBar(
           currentIndex: selectedIndex,
           backgroundColor: bgColor,
+          selectedLabelStyle: TextStyle(decoration: TextDecoration.underline, color: appColor),
+          selectedItemColor: appColor,
           showUnselectedLabels: false,
           type: BottomNavigationBarType.fixed,
           onTap: _onItemTapped,
           items: [
             BottomNavigationBarItem(
               backgroundColor: bgColor,
-              title: Text(""),
+              title: Text("       "),
               icon: Image.asset('./assets/images/home.png', height: 25),
             ),
             BottomNavigationBarItem(
-              title: Text(""),
+              title: Text("       "),
               icon: Image.asset('./assets/images/message.png', height: 25)
             ),
             BottomNavigationBarItem(
-              title: Text(""),
+              title: Text("       "),
+              icon: Image.asset('./assets/images/incognito.png', height: 35)
+            ),
+            BottomNavigationBarItem(
+              title: Text("       "),
               icon: Image.asset('./assets/images/compass.png', height: 25)
             ),
             BottomNavigationBarItem(
-              title: Text(""),
+              title: Text("       "),
               icon: Image.asset('./assets/images/settings.png', height: 25)
             ),
             
