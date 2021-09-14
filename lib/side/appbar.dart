@@ -38,14 +38,7 @@ class ApplicationBar extends StatelessWidget {
       ),
       title: Row(
         children: [
-          isAppManager == true ? Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: appColor, width: 2)
-            ),
-            height: 45,
-            width: 45,
-            child: CachedImage(url: authData.loggedInUser.profileImage),
-          ) : Container(),
+          isAppManager == true ? CachedImage(url: authData.loggedInUser.profileImage, isProfileImg: true) : Container(),
           isAppManager == true ? SizedBox(width: 10) : Container(),
           Text(title, style: TextStyle(color: titleColor, fontSize: 24))
         ],
