@@ -17,17 +17,20 @@ class _CommunitySearchInputState extends State<CommunitySearchInput> {
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          color: appColor.withOpacity(0.2),
+          color: containerColor,
           borderRadius: BorderRadius.circular(10)
         ),
-        child: TextField(
-          controller: widget.controller,
-          onChanged: widget.search,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(15),
-            prefixIcon: Icon(Icons.search),
-            hintText: "Search for community...",
-            border: InputBorder.none
+        child: Center(
+          child: TextField(
+            cursorColor: Colors.grey,
+            controller: widget.controller,
+            onChanged: widget.search,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: 8),
+              prefixIcon: Icon(Icons.search, color: iconColor),
+              hintText: "Search for community...",
+              border: InputBorder.none
+            ),
           ),
         ),
       ),

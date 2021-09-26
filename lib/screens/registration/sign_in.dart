@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class SignInScreen extends StatefulWidget {
   static const routeName = "/screens/registration/sign_in.dart";
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  static bool isUsernameError;
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -18,28 +19,31 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Form(
-          key: SignInScreen.formKey,
-          child: ListView(
-            physics: NeverScrollableScrollPhysics(),
-            children: [
-              SizedBox(
-                height: 50,
-              ),
-              Text(
-                "Welcome To ",
-                style: TextStyle(fontSize: 40),
-              ),
-              Text(
-                "DoodApp",
-                style: TextStyle(
-                    color: appColor, fontSize: 40, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 120),
-              Column(
+      backgroundColor: appColor,
+      body: Form(
+        key: SignInScreen.formKey,
+        child: ListView(
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            SizedBox(
+              height: 80,
+            ),
+            _screenTitle(),
+            SizedBox(height: 100),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                  color: containerColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(55),
+                    topRight: Radius.circular(55),
+                  )),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 15, left: 15),
+                child: Column(
                   children: [
+                    SizedBox(height: 50),
                     SignInEmail(controller: emailController),
                     SizedBox(height: 15),
                     SignInPassword(controller: passwordController),
@@ -78,16 +82,37 @@ class _SignInScreenState extends State<SignInScreen> {
                                   color: appColor,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline),
+                                  ),
                             ))
                       ],
                     )
                   ],
                 ),
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+}
+
+Widget _screenTitle() {
+  return Padding(
+    padding: const EdgeInsets.only(right: 15, left: 15),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Sign In",
+          style: TextStyle(
+              fontSize: 32, color: titleColor, fontWeight: FontWeight.bold),
+        ),
+        // Text(
+        //   "Join DoodApp family and start exploring communities and expand your relationships",
+        //   style: TextStyle(color: subtitleColor, fontSize: 14),
+        // ),
+      ],
+    ),
+  );
 }

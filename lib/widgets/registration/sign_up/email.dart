@@ -9,6 +9,10 @@ class SignUpEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: tileColor
+      ),
       child: TextFormField(
         controller: controller,
         validator: (value) {
@@ -23,7 +27,7 @@ class SignUpEmail extends StatelessWidget {
         decoration: InputDecoration(
             labelText: "Email",
             labelStyle: TextStyle(color: subtextColor),
-            suffixIcon: Icon(Icons.email, color: subtextColor),
+            prefixIcon: Image.asset('./assets/icons/email.png')
             ),
       ),
     );

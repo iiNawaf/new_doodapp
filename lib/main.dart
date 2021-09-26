@@ -1,5 +1,6 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:doodapp/providers/auth_provider.dart';
+import 'package:doodapp/providers/category_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/providers/reports_provider.dart';
 import 'package:doodapp/screens/communities/community_chat/community_chat.dart';
@@ -41,28 +42,38 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(
           value: ReportsProvider(),
         ),
+        ChangeNotifierProvider.value(
+          value: CategoryProvider()
+          ),
       ],
       child: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              fontFamily: 'Ubuntu',
-              primaryColor: appColor,
-              scaffoldBackgroundColor: bgColor,
-              cursorColor: Colors.grey,
-              iconTheme: IconThemeData(color: Colors.pink),
-              appBarTheme: AppBarTheme(
-                elevation: 0,
-                backgroundColor: bgColor,
-              ),
-              textTheme: TextTheme(
-                headline:
-                    TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-                title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-                body1: TextStyle(color: Colors.black),
-              ),
-            ),
+                fontFamily: 'Cairo',
+                primaryIconTheme: IconThemeData(color: Color(0xff000000)),
+                primaryColor: appColor,
+                scaffoldBackgroundColor: bgColor,
+                iconTheme: IconThemeData(color: Colors.pink),
+                appBarTheme: AppBarTheme(
+                  elevation: 0,
+                  backgroundColor: bgColor,
+                ),
+                textTheme: TextTheme(
+                  headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                  title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+                  body1: TextStyle(color: Colors.black),
+                ),
+                inputDecorationTheme: InputDecorationTheme(
+                    border: InputBorder.none,
+                    labelStyle: TextStyle(color: inputLabelColor),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: appColor)),
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: appColor)))),
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -86,20 +97,22 @@ class _MyAppState extends State<MyApp> {
             },
             home: FutureBuilder<ConnectivityResult>(
               future: _buildAppStatus(),
-              builder: (context, snapshot){
-                if(snapshot.connectionState == ConnectionState.waiting) return GeneralLoading();
-                if(!snapshot.hasData) return Center(child: Text("No data"));
-                return snapshot.data == ConnectivityResult.none 
-                ? Center(child: Text("No network connection."),) 
-                : AuthWrapper();
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return GeneralLoading();
+                if (!snapshot.hasData) return Center(child: Text("No data"));
+                return snapshot.data == ConnectivityResult.none
+                    ? Center(
+                        child: Text("No network connection."),
+                      )
+                    : AuthWrapper();
               },
-            )
-            ),
+            )),
       ),
     );
   }
 }
 
-   Future<ConnectivityResult> _buildAppStatus() async{
-    return await Connectivity().checkConnectivity();
-  }
+Future<ConnectivityResult> _buildAppStatus() async {
+  return await Connectivity().checkConnectivity();
+}

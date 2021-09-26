@@ -8,6 +8,10 @@ class SignUpPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: tileColor
+      ),
       child: TextFormField(
         controller: controller,
         validator: (value) => value.isEmpty ? "Field is empty" : null,
@@ -15,7 +19,7 @@ class SignUpPassword extends StatelessWidget {
         decoration: InputDecoration(
             labelText: "Password",
             labelStyle: TextStyle(color: subtextColor),
-            suffixIcon: Icon(Icons.lock, color: subtextColor)
+            prefixIcon: Image.asset('./assets/icons/padlock.png')
             ),
       ),
     );

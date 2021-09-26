@@ -3,6 +3,7 @@ import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/communities/community_info/community_info.dart';
 import 'package:doodapp/screens/communities/create_new_community/create_new_community.dart';
+import 'package:doodapp/screens/home/search_community.dart';
 import 'package:doodapp/shared/cached_image.dart';
 import 'package:doodapp/shared/custom_dialog.dart';
 import 'package:doodapp/shared/utilities.dart';
@@ -16,9 +17,11 @@ class ApplicationBar extends StatelessWidget {
   bool isAllCommunities;
   bool isCommunityChat;
   bool isCommunityInfo;
+  bool isSearchCommunity;
+  bool isCategoryCommunities;
   String title;
   Community community;
-  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo, this.isAppManager});
+  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo, this.isAppManager, this.isSearchCommunity, this.isCategoryCommunities});
   @override
   Widget build(BuildContext context) {
     final authData = Provider.of<AuthProvider>(context);
@@ -37,10 +40,22 @@ class ApplicationBar extends StatelessWidget {
       preferredSize: Size.fromHeight(1.0)
       ),
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          isAppManager == true ? CachedImage(url: authData.loggedInUser.profileImage, isProfileImg: true) : Container(),
-          isAppManager == true ? SizedBox(width: 10) : Container(),
-          Text(title, style: TextStyle(color: titleColor, fontSize: 24))
+          Row(
+            children: [
+              isAppManager == true ? CachedImage(url: authData.loggedInUser.profileImage, isProfileImg: true) : Container(),
+              isAppManager == true ? SizedBox(width: 10) : Container(),
+              Text(title, style: TextStyle(color: Color(0xff000000), fontSize: 20, fontWeight: FontWeight.bold))
+            ],
+          ),
+          isAppManager == true ? GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SearchCommunityScreen(communityList: cp.communityList,))),
+            child: CircleAvatar(
+              backgroundColor: circleBgColor,
+              child: Image.asset('./assets/icons/loupe.png'),
+            ),
+          ) : Container()
         ],
       ),
       

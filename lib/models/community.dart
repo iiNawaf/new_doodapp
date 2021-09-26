@@ -6,10 +6,14 @@ class Community {
   final String bio;
   final String image;
   final String ownerID;
+  final String ownerUsername;
+  final String ownerProfileImg;
+  final String categoryTitle;
+  final String categoryImage;
   String lastMessage;
   String status;
 
-  Community({this.id, this.bio, this.title, this.image, this.ownerID, this.status, this.lastMessage});
+  Community({this.id, this.bio, this.title, this.image, this.ownerID, this.status, this.lastMessage, this.ownerProfileImg, this.ownerUsername, this.categoryImage, this.categoryTitle});
 }
 
 

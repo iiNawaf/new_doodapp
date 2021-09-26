@@ -1,4 +1,6 @@
+import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:doodapp/providers/auth_provider.dart';
+import 'package:doodapp/providers/category_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/message/message_list.dart';
 import 'package:doodapp/screens/home/home.dart';
@@ -17,6 +19,7 @@ class _AppManagerState extends State<AppManager> {
   bool isInit = true;
   bool isLoading = false;
   int selectedIndex = 0;
+
   @override
   void didChangeDependencies() async {
     try {
@@ -28,10 +31,14 @@ class _AppManagerState extends State<AppManager> {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         final communityProvider =
             Provider.of<CommunityProvider>(context, listen: false);
+        final categoryProvider =
+            Provider.of<CategoryProvider>(context, listen: false);
         //first, fetch user data
         await authProvider.fetchUserData();
         // then, fetch community list
         await communityProvider.fetchCommunityList();
+        // fetch category list
+        await categoryProvider.fetchCategoryList();
         setState(() {
           isLoading = false;
         });
@@ -49,7 +56,7 @@ class _AppManagerState extends State<AppManager> {
     super.didChangeDependencies();
   }
 
-  void _onItemTapped(int index){
+  void _onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
     });
@@ -58,68 +65,56 @@ class _AppManagerState extends State<AppManager> {
   List<Widget> screens = [
     HomeScreen(),
     MessageListScreen(),
-
+    MessageListScreen(),
+    MessageListScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isLoading 
-      ? AppBar() 
-      : PreferredSize(
-        preferredSize: Size.fromHeight(65),
-        child: ApplicationBar(
-          isAppManager: true,
-          title: selectedIndex == 0 
-          ? "Home" 
-          : selectedIndex == 1 
-          ? "Messages" 
-          : "",
+        appBar: isLoading
+            ? AppBar()
+            : PreferredSize(
+                preferredSize: Size.fromHeight(65),
+                child: ApplicationBar(
+                  isAppManager: true,
+                  title: selectedIndex == 0
+                      ? "Home"
+                      : selectedIndex == 1
+                          ? "Messages"
+                          : selectedIndex == 2
+                              ? "DoodArea"
+                              : selectedIndex == 3
+                                  ? "Discover"
+                                  : "Profile",
+                ),
+              ),
+        bottomNavigationBar: Container(
+          height: 100,
+          child: BubbleBottomBar(
+            opacity: .2,
+            backgroundColor: appColor,
+            currentIndex: selectedIndex,
+            onTap:
+                _onItemTapped, //border radius doesn't work when the notch is enabled.
+            elevation: 0,
+            items: [
+              navItem("Home", './assets/icons/home.png'),
+              navItem("Messages", './assets/icons/message.png'),
+              navItem("DoodArea", './assets/icons/incognito.png'),
+              navItem("Discover", './assets/icons/compass.png'),
+              navItem("My Profile", './assets/icons/profile_icon.png'),
+            ],
           ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(color: subtextColor, width: 1)
-          )
         ),
-        child: BottomNavigationBar(
-          currentIndex: selectedIndex,
-          backgroundColor: bgColor,
-          selectedLabelStyle: TextStyle(decoration: TextDecoration.underline, color: appColor),
-          selectedItemColor: appColor,
-          showUnselectedLabels: false,
-          type: BottomNavigationBarType.fixed,
-          onTap: _onItemTapped,
-          items: [
-            BottomNavigationBarItem(
-              backgroundColor: bgColor,
-              title: Text("       "),
-              icon: Image.asset('./assets/images/home.png', height: 25),
-            ),
-            BottomNavigationBarItem(
-              title: Text("       "),
-              icon: Image.asset('./assets/images/message.png', height: 25)
-            ),
-            BottomNavigationBarItem(
-              title: Text("       "),
-              icon: Image.asset('./assets/images/incognito.png', height: 35)
-            ),
-            BottomNavigationBarItem(
-              title: Text("       "),
-              icon: Image.asset('./assets/images/compass.png', height: 25)
-            ),
-            BottomNavigationBarItem(
-              title: Text("       "),
-              icon: Image.asset('./assets/images/settings.png', height: 25)
-            ),
-            
-          ]
-        ),
-      ),
-      body: isLoading
-          ? HomeLoading()
-          : screens.elementAt(selectedIndex)
-    );
+        body: isLoading ? HomeLoading() : screens.elementAt(selectedIndex));
+  }
+
+  BubbleBottomBarItem navItem(String title, String img) {
+    return BubbleBottomBarItem(
+        backgroundColor: Color(0xffffffff),
+        icon: Image.asset(img),
+        activeIcon: Image.asset(img),
+        title: Text(title));
   }
 }

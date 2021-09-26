@@ -8,6 +8,10 @@ class PhoneNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: tileColor
+      ),
       child: TextFormField(
         maxLength: 10,
         controller: controller,
@@ -23,7 +27,7 @@ class PhoneNumber extends StatelessWidget {
         decoration: InputDecoration(
             labelText: "Phone Number",
             labelStyle: TextStyle(color: subtextColor),
-            suffixIcon: Icon(Icons.phone, color: subtextColor),
+            prefixIcon: Image.asset('./assets/icons/phone-call.png'),
             counterText: ""
       ),
       )

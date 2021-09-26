@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doodapp/models/category.dart';
 import 'package:doodapp/models/community.dart';
 import 'package:doodapp/models/user.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,6 +14,7 @@ class CommunityProvider with ChangeNotifier {
   final communityChatCollection =
       FirebaseFirestore.instance.collection('community_chat');
   final userCollection = FirebaseFirestore.instance.collection('users_info');
+  final categoryCollection = FirebaseFirestore.instance.collection('categories');
 
   List<Community> communityList = [];
   Community community;
@@ -30,7 +32,11 @@ class CommunityProvider with ChangeNotifier {
         bio: snap.data()['bio'],
         ownerID: snap.data()['owner_id'],
         status: snap.data()['status'],
-        lastMessage: snap.data()['last_message']
+        lastMessage: snap.data()['last_message'],
+        ownerUsername: snap.data()['owner_username'],
+        ownerProfileImg: snap.data()['owner_profile_img'],
+        categoryTitle: snap.data()['category_title'],
+        categoryImage: snap.data()['category_image'],
       );
       communityList.add(community);
     });
@@ -38,7 +44,7 @@ class CommunityProvider with ChangeNotifier {
   }
 
   Future<void> createCommunity(String title, String bio, String ownerID,
-      File image, String username, String email, String profileImage) async {
+      File image, String username, String email, String profileImage, Category category) async {
     communityRef = communityCollection.doc();
     String imgUrl;
     Reference reference =
@@ -55,14 +61,19 @@ class CommunityProvider with ChangeNotifier {
           'title': title,
           'bio': bio,
           'owner_id': ownerID,
+          'owner_username': username,
+          'owner_profile_img': profileImage,
           'image': imgUrl == ""
               ? "https://firebasestorage.googleapis.com/v0/b/doodapp-ebf46.appspot.com/o/default_community_image.jpg?alt=media&token=3cd34fb7-e2d6-47ec-81fc-1c2041c6ef46"
               : imgUrl,
           'status': "available",
-          'last_message': ""
+          'last_message': "",
+          'category_title': category.title,
+          'category_image': category.image
         })
         .then((value) => print("Done"))
         .catchError((error) => print("Failed to create community!"));
+
   }
 
   Future<void> sendMessageToCommunity(

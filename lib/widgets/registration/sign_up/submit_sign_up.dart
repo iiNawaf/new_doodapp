@@ -28,7 +28,7 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
               await _signUp(widget.username.text.toLowerCase(), auth);
             },
             child: Container(
-              height: 60,
+              height: 50,
               decoration: BoxDecoration(
                 color: appColor,
                 borderRadius: BorderRadius.circular(10),

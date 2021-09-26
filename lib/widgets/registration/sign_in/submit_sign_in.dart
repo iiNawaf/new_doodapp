@@ -36,7 +36,7 @@ class _SubmitSignInState extends State<SubmitSignIn> {
               content: Text(
                 e.toString().contains("email address is badly formatted.") 
                 ? "Email address is badly formatted." 
-                : "User is invalid"
+                : "Wrong email or password"
                 ),
                 )
           );
@@ -46,7 +46,7 @@ class _SubmitSignInState extends State<SubmitSignIn> {
                 });
       },
       child: Container(
-        height: 60,
+        height: 50,
         decoration: BoxDecoration(
           color: appColor,
           borderRadius: BorderRadius.circular(10),

@@ -1,9 +1,14 @@
+import 'package:doodapp/shared/utilities.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ImageLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(child: SpinKitDoubleBounce(color: Colors.grey));
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: subtitleColor,
+      ),
+    );
   }
 }

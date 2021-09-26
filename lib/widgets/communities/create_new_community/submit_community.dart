@@ -1,7 +1,6 @@
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/communities/create_new_community/create_new_community.dart';
-import 'package:doodapp/screens/wrapper/auth_wrapper.dart';
 import 'package:doodapp/shared/custom_dialog.dart';
 import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/widgets/communities/create_new_community/choose_community_image.dart';
@@ -27,7 +26,11 @@ class _SubmitCommunityState extends State<SubmitCommunity> {
     return GestureDetector(
       onTap: () async {
         if (CreateNewCommunity.formKey.currentState.validate()) {
-          if (ChooseCommunityImage.communityImage == null) {
+          if (CreateNewCommunity.category == null) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text("Select a category!"),
+            ));
+          } else if (ChooseCommunityImage.communityImage == null) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text("Please choose an image"),
             ));
@@ -53,19 +56,29 @@ class _SubmitCommunityState extends State<SubmitCommunity> {
                                       setState(() {
                                         isLoading = true;
                                       });
-                                      await community.createCommunity(
-                                        widget.title.text,
-                                        widget.bio.text,
-                                        authData.loggedInUser.id,
-                                        ChooseCommunityImage.communityImage,
-                                        authData.loggedInUser.username,
-                                        authData.loggedInUser.email,
-                                        authData.loggedInUser.profileImage,
-                                      );
+
+                                      try {
+                                        await community.createCommunity(
+                                          widget.title.text,
+                                          widget.bio.text,
+                                          authData.loggedInUser.id,
+                                          ChooseCommunityImage.communityImage,
+                                          authData.loggedInUser.username,
+                                          authData.loggedInUser.email,
+                                          authData.loggedInUser.profileImage,
+                                          CreateNewCommunity.category,
+                                        );
+                                      } catch (e) {
+                                        print("Error $e");
+                                        Navigator.pop(context);
+                                        CreateNewCommunity.scaffoldKey.currentState.showSnackBar(
+                                          SnackBar(content: Text("Cannot create community at the moment, try again later."))
+                                        );
+                                      }
 
                                       community.fetchCommunityList();
-                                      Navigator.popUntil(
-                                          context, (route) => route.isFirst);
+                                      // Navigator.popUntil(
+                                      //     context, (route) => route.isFirst);
                                       setState(() {
                                         isLoading = false;
                                       });
