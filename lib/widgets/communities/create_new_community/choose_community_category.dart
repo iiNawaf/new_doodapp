@@ -2,6 +2,7 @@ import 'package:doodapp/models/category.dart';
 import 'package:doodapp/providers/category_provider.dart';
 import 'package:doodapp/screens/communities/create_new_community/create_new_community.dart';
 import 'package:doodapp/shared/utilities.dart';
+import 'package:doodapp/widgets/home/explore_categories.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,7 @@ class _ChooseCommunityCategoryState extends State<ChooseCommunityCategory> {
                   categoryProvider.categoryList.map<DropdownMenuItem<Category>>((Category value) {
                 return DropdownMenuItem<Category>(
                   value: value,
-                  child: Text(value.title),
+                  child: categoryTitle(value.title, titleBlackColor),
                 );
               }).toList(),
             );

@@ -77,8 +77,8 @@ class _SubmitCommunityState extends State<SubmitCommunity> {
                                       }
 
                                       community.fetchCommunityList();
-                                      // Navigator.popUntil(
-                                      //     context, (route) => route.isFirst);
+                                      Navigator.popUntil(
+                                          context, (route) => route.isFirst);
                                       setState(() {
                                         isLoading = false;
                                       });

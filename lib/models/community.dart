@@ -10,10 +10,11 @@ class Community {
   final String ownerProfileImg;
   final String categoryTitle;
   final String categoryImage;
+  final dynamic createTime;
   String lastMessage;
   String status;
 
-  Community({this.id, this.bio, this.title, this.image, this.ownerID, this.status, this.lastMessage, this.ownerProfileImg, this.ownerUsername, this.categoryImage, this.categoryTitle});
+  Community({this.id, this.bio, this.title, this.image, this.ownerID, this.status, this.lastMessage, this.ownerProfileImg, this.ownerUsername, this.categoryImage, this.categoryTitle, this.createTime});
 }
 
 

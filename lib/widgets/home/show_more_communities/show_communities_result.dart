@@ -2,6 +2,7 @@ import 'package:doodapp/models/community.dart';
 import 'package:doodapp/screens/communities/community_chat/community_chat.dart';
 import 'package:doodapp/shared/cached_image.dart';
 import 'package:doodapp/shared/utilities.dart';
+import 'package:doodapp/widgets/home/explore_categories.dart';
 import 'package:flutter/material.dart';
 
 class ShowCommunitiesResult extends StatelessWidget {
@@ -16,10 +17,10 @@ class ShowCommunitiesResult extends StatelessWidget {
             builder: (context) => CommunityChatScreen(community: community))),
         child: Container(
           padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: tileColor,
-                    ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: tileColor,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,16 +29,16 @@ class ShowCommunitiesResult extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: CachedImage(url: community.image),
-                        ),
-                        height: 70,
-                        width: 70,
-                      ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: CachedImage(url: community.image),
+                    ),
+                    height: 70,
+                    width: 70,
+                  ),
                   SizedBox(width: 5),
                   Container(
                     width: 230,
@@ -47,9 +48,13 @@ class ShowCommunitiesResult extends StatelessWidget {
                         Text("${community.title}",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text("[${community.categoryTitle}]${community.bio}",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: communitySubtitleColor)),
+                        Container(
+                          width: 250,
+                          child: Text(
+                              " ${categoryTitle(community.categoryTitle, appColor).data} ${community.bio}",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: communitySubtitleColor)),
+                        )
                       ],
                     ),
                   ),

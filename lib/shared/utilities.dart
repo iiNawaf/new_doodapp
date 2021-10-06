@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 //color
 final appColor = Color(0xffE94141);
 final bgColor = Color(0xffffffff);
+final bgDarkColor = Color(0xff121212);
+final darkAppBar = Color(0xff303030);
 final subtextColor = Color(0xffCECDCD);
 final tileColor = Color(0xffF8F4F4);
 final titleColor = Color(0xffffffff);

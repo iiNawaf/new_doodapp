@@ -9,23 +9,24 @@ class CachedImage extends StatelessWidget {
   bool isProfileImg;
   bool isCommunityImg;
   bool isIcon;
-  CachedImage({this.url, this.isProfileImg, this.isCommunityImg, this.isIcon});
+  double radius;
+  CachedImage({this.url, this.isProfileImg, this.isCommunityImg, this.isIcon, this.radius});
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: url,
       imageBuilder: (context, loadedImage) => isProfileImg == true
       ? CircleAvatar(
-        radius: 25,
+        radius: radius,
         backgroundColor: appColor,
         backgroundImage: loadedImage,       
       )
       : isCommunityImg == true
       ? Container(
-        height: 250,
+        height: 260,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.network(url, fit: BoxFit.fill,),
+          borderRadius: BorderRadius.circular(10),
+          child: Image(image: loadedImage, fit: BoxFit.fill),
         ),
       )
       : Image(image: loadedImage, fit: BoxFit.cover),

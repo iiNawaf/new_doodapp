@@ -10,7 +10,8 @@ class SubmitSignUp extends StatefulWidget {
   TextEditingController username;
   TextEditingController email;
   TextEditingController password;
-  SubmitSignUp({this.password, this.email, this.username});
+  TextEditingController phoneNumber;
+  SubmitSignUp({this.password, this.email, this.username, this.phoneNumber});
 
   @override
   _SubmitSignUpState createState() => _SubmitSignUpState();
@@ -64,7 +65,7 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
               isLoading = true;
             });
             await auth.signUp(
-                widget.email.text, widget.password.text, widget.username.text);
+                widget.email.text, widget.password.text, widget.username.text, int.parse(widget.phoneNumber.text));
             Navigator.of(context).popUntil((route) => route.isFirst);
             setState(() {
               isLoading = false;

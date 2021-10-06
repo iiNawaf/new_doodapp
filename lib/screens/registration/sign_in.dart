@@ -108,10 +108,6 @@ Widget _screenTitle() {
           style: TextStyle(
               fontSize: 32, color: titleColor, fontWeight: FontWeight.bold),
         ),
-        // Text(
-        //   "Join DoodApp family and start exploring communities and expand your relationships",
-        //   style: TextStyle(color: subtitleColor, fontSize: 14),
-        // ),
       ],
     ),
   );

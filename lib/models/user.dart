@@ -3,6 +3,7 @@ class UserModel {
   final String id;
   final String email;
   final String username;
+  final int phoneNumber;
   String profileImage;
   String accountType;
   String status;
@@ -13,6 +14,7 @@ class UserModel {
       this.id,
       this.email,
       this.username,
+      this.phoneNumber,
       this.profileImage,
       this.accountType,
       this.communitiesJoined});

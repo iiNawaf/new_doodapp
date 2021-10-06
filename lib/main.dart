@@ -1,5 +1,7 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:doodapp/app_manager/app_manager.dart';
 import 'package:doodapp/providers/auth_provider.dart';
+import 'package:doodapp/providers/banner_provider.dart';
 import 'package:doodapp/providers/category_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/providers/reports_provider.dart';
@@ -44,6 +46,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider.value(
           value: CategoryProvider()
+          ),
+          ChangeNotifierProvider.value(
+          value: BannerProvider()
           ),
       ],
       child: GestureDetector(

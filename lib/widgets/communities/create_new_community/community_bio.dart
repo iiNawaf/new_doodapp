@@ -18,8 +18,10 @@ class CommunityBio extends StatelessWidget {
       },
       maxLines: 4,
       maxLength: 150,
+      cursorColor: Colors.grey,
       textAlign: TextAlign.start,
       decoration: InputDecoration(
+        alignLabelWithHint: true,
           labelText: "Community Bio", border: OutlineInputBorder()),
     );
   }

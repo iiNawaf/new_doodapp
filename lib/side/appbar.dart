@@ -19,19 +19,21 @@ class ApplicationBar extends StatelessWidget {
   bool isCommunityInfo;
   bool isSearchCommunity;
   bool isCategoryCommunities;
+  int selectedIndex;
   String title;
   Community community;
-  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo, this.isAppManager, this.isSearchCommunity, this.isCategoryCommunities});
+  ApplicationBar({this.isHome, this.isCreateNewCommunity, this.isAllCommunities, this.isCommunityChat, this.title, this.community, this.isCommunityInfo, this.isAppManager, this.isSearchCommunity, this.isCategoryCommunities, this.selectedIndex});
   @override
   Widget build(BuildContext context) {
     final authData = Provider.of<AuthProvider>(context);
     final cp = Provider.of<CommunityProvider>(context);
     return AppBar(
+      backgroundColor: selectedIndex == 2 ? darkAppBar : bgColor,
       bottom: PreferredSize(
       child: Column(
         children: [
           SizedBox(height: 10),
-          Container(
+          selectedIndex == 2 ? Container() : Container(
          color: subtextColor,
          height: 1.0,
       ),
@@ -44,12 +46,13 @@ class ApplicationBar extends StatelessWidget {
         children: [
           Row(
             children: [
-              isAppManager == true ? CachedImage(url: authData.loggedInUser.profileImage, isProfileImg: true) : Container(),
+              selectedIndex == 2 ? CircleAvatar(radius: 25, backgroundColor: Color(0xff424242), child: Image.asset("./assets/images/ghost.png", height: 35,),) :
+              isAppManager == true ? CachedImage(url: authData.loggedInUser.profileImage, isProfileImg: true, radius: 25,) : Container(),
               isAppManager == true ? SizedBox(width: 10) : Container(),
-              Text(title, style: TextStyle(color: Color(0xff000000), fontSize: 20, fontWeight: FontWeight.bold))
+              Text(title, style: TextStyle(color: selectedIndex == 2 ? Color(0xffFFFFFF) : Color(0xff000000), fontSize: 20, fontWeight: FontWeight.bold))
             ],
           ),
-          isAppManager == true ? GestureDetector(
+          isAppManager == true ? selectedIndex == 2 ? Container() : GestureDetector(
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SearchCommunityScreen(communityList: cp.communityList,))),
             child: CircleAvatar(
               backgroundColor: circleBgColor,

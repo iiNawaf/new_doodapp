@@ -5,7 +5,6 @@ import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/communities/community_chat/community_chat.dart';
 import 'package:doodapp/shared/cached_image.dart';
 import 'package:doodapp/shared/utilities.dart';
-import 'package:doodapp/widgets/message/message_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +19,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
   Widget build(BuildContext context) {
     final communityProvider = Provider.of<CommunityProvider>(context);
     final authData = Provider.of<AuthProvider>(context);
-    // communityProvider.fetchCommunityList();
+    communityProvider.fetchCommunityList();
 
     return SingleChildScrollView(
       child: Padding(
@@ -32,7 +31,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
               "Recent",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             _buildListButton(),
             _buildMessageList(
                 authData.loggedInUser, communityProvider.communityList),
@@ -107,25 +106,72 @@ class _MessageListScreenState extends State<MessageListScreen> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: communityList.length,
             itemBuilder: (ctx, index) {
-              return Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 30,
-                    child: CachedImage(
-                      url: communityList[index].image,
-                      isCommunityImg: true,
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Text("${communityList[index].title}"),
-                      Text("${communityList[index].bio}"),
-                    ],
-                  )
-                ],
-              ));
+              return Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: GestureDetector(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CommunityChatScreen(
+                                community: communityList[index],
+                              ))),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: tileColor,
+                            ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: CachedImage(
+                                      url: communityList[index].image),
+                                ),
+                                height: 70,
+                                width: 70,
+                              ),
+                              SizedBox(width: 5),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    communityList[index].title,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                  Container(
+                                    width: 200,
+                                    child: Text(
+                                      communityList[index].lastMessage.isEmpty
+                                          ? ". . ."
+                                          : "${communityList[index].lastMessage}",
+                                      style:
+                                          TextStyle(color: communitySubtitleColor),
+                                          overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Icon(Icons.arrow_forward_ios,
+                              color: communitySubtitleColor),
+                        ],
+                      )),
+                ),
+              );
             });
   }
 }

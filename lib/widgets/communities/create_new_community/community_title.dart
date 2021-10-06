@@ -17,9 +17,12 @@ class CommunityTitle extends StatelessWidget {
           },
           maxLength: 20,
           controller: controller,
+          cursorColor: Colors.grey,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.all(15),
             labelText: "Community Title",
-            counterText: ""
+            counterText: "",
+            border: OutlineInputBorder()
             ),
         );
   }

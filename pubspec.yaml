@@ -33,7 +33,6 @@ dependencies:
   firebase_core: ^0.7.0
   provider: ^4.3.3
   flutter_spinkit:
-  # fancy_bottom_navigation: ^0.3.2
   image_picker: ^0.6.6+1
   firebase_storage: ^7.0.0
   cached_network_image:
@@ -41,6 +40,7 @@ dependencies:
   connectivity: ^2.0.2
   flutter_image_slideshow: ^0.1.1
   bubble_bottom_bar: ^1.2.0
+  url_launcher: ^5.7.10
   flutter_localizations:
     sdk: flutter
 

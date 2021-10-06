@@ -4,6 +4,7 @@ import 'package:doodapp/shared/cached_image.dart';
 import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/widgets/home/explore_categories.dart';
 import 'package:flutter/material.dart';
+import 'package:doodapp/shared/time.dart';
 
 class RecentCommunitiesList extends StatelessWidget {
   List<Community> communityList;
@@ -80,6 +81,7 @@ class RecentCommunitiesList extends StatelessWidget {
                           Row(
                             children: [
                               CachedImage(
+                                radius: 25,
                                   url: communityList[index].ownerProfileImg,
                                   isProfileImg: true),
                               SizedBox(width: 10),
@@ -90,7 +92,7 @@ class RecentCommunitiesList extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            "10 mins ago",
+                            "${Time.displayTimeAgoFromTimestamp(communityList[index].createTime.toDate().toString())}",
                             style: TextStyle(color: communitySubtitleColor),
                           ),
                         ],

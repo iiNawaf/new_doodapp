@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:doodapp/models/community.dart';
+import 'package:doodapp/models/user.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/communities/create_new_community/create_new_community.dart';
 import 'package:doodapp/screens/home/all_communities.dart';
+import 'package:doodapp/shared/custom_dialog.dart';
 import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/widgets/home/explore_categories.dart';
 import 'package:doodapp/widgets/home/home_carousel.dart';
@@ -22,6 +24,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController liveChatController = TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isCommunityFound = false;
+
+  bool isAlreadyHaveCommunity(UserModel loggedInUser, List<Community> communityList){
+    for(var i = 0; i < communityList.length; i++){
+      if(communityList[i].ownerID == loggedInUser.id && loggedInUser.accountType != "admin"){
+        isCommunityFound =  true;
+      }else{
+        isCommunityFound =  false;
+      }
+    }
+    return isCommunityFound;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +46,24 @@ class _HomeScreenState extends State<HomeScreen> {
         : Scaffold(
             floatingActionButton: FloatingActionButton(
               backgroundColor: appColor,
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CreateNewCommunity())),
+              onPressed: () {
+                if(isAlreadyHaveCommunity(authData.loggedInUser, communityProvider.communityList)){
+                  showDialog(context: context,
+                   builder: (context){
+                     return AppAlertDialog(
+                    title: Text("Can't create community", style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),),
+                    content: Text("You already have a community. If you want to create a new community you should delete your current community."),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(context), child: Text("Ok", style: TextStyle(color: titleBlackColor, fontWeight: FontWeight.bold)))
+                    ],
+                  );
+                   }
+                   );
+                }else{
+                  Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => CreateNewCommunity()));
+                }
+              },
               child: Icon(Icons.add),
             ),
             key: _scaffoldKey,
@@ -43,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(height: 10),
-                  HomeCarousel(),
+                  HomeBanner(),
                   Padding(
                     padding: const EdgeInsets.only(right: 15, left: 15),
                     child: Column(
@@ -54,10 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         ExploreCategories(),
                         SizedBox(height: 5),
                         // recent communities
-                        _recentCommunitiesTitle(
-                            context, communityProvider.communityList),
+                        // _recentCommunitiesTitle(
+                        //     context, communityProvider.communityList),
                         SizedBox(height: 10),
-                        RecentCommunitiesList(communityProvider.communityList),
+                        communityProvider.communityList.length == 0
+                            ? Text("No recent communities found.")
+                            : RecentCommunitiesList(
+                                communityProvider.communityList),
                       ],
                     ),
                   )

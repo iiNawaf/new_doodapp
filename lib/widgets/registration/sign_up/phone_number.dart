@@ -14,6 +14,7 @@ class PhoneNumber extends StatelessWidget {
       ),
       child: TextFormField(
         maxLength: 10,
+        keyboardType: TextInputType.number,
         controller: controller,
         validator: (value) {
           if(value.isEmpty){
