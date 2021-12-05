@@ -1,7 +1,9 @@
 class Dood{
   final String id;
   String senderID;
-  List<String> replies;
+  String content;
+  dynamic sendTime;
+  bool isReported;
 
-  Dood({this.id, this.replies, this.senderID});
+  Dood({this.id, this.content, this.senderID, this.sendTime, this.isReported});
 }

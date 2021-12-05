@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:doodapp/admin_panel/admin_panel.dart';
 import 'package:doodapp/models/community.dart';
 import 'package:doodapp/models/user.dart';
 import 'package:doodapp/providers/auth_provider.dart';
@@ -26,12 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isCommunityFound = false;
 
-  bool isAlreadyHaveCommunity(UserModel loggedInUser, List<Community> communityList){
-    for(var i = 0; i < communityList.length; i++){
-      if(communityList[i].ownerID == loggedInUser.id && loggedInUser.accountType != "admin"){
-        isCommunityFound =  true;
-      }else{
-        isCommunityFound =  false;
+  bool isAlreadyHaveCommunity(
+      UserModel loggedInUser, List<Community> communityList) {
+    for (var i = 0; i < communityList.length; i++) {
+      if (communityList[i].ownerID == loggedInUser.id &&
+          loggedInUser.accountType != "admin") {
+        isCommunityFound = true;
+      } else {
+        isCommunityFound = false;
       }
     }
     return isCommunityFound;
@@ -47,21 +50,32 @@ class _HomeScreenState extends State<HomeScreen> {
             floatingActionButton: FloatingActionButton(
               backgroundColor: appColor,
               onPressed: () {
-                if(isAlreadyHaveCommunity(authData.loggedInUser, communityProvider.communityList)){
-                  showDialog(context: context,
-                   builder: (context){
-                     return AppAlertDialog(
-                    title: Text("Can't create community", style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),),
-                    content: Text("You already have a community. If you want to create a new community you should delete your current community."),
-                    actions: [
-                      TextButton(onPressed: () => Navigator.pop(context), child: Text("Ok", style: TextStyle(color: titleBlackColor, fontWeight: FontWeight.bold)))
-                    ],
-                  );
-                   }
-                   );
-                }else{
+                if (isAlreadyHaveCommunity(
+                    authData.loggedInUser, communityProvider.communityList)) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AppAlertDialog(
+                          title: Text(
+                            "Can't create community",
+                            style: TextStyle(
+                                fontSize: 21, fontWeight: FontWeight.bold),
+                          ),
+                          content: Text(
+                              "You already have a community. If you want to create a new community you should delete your current community."),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("Ok",
+                                    style: TextStyle(
+                                        color: titleBlackColor,
+                                        fontWeight: FontWeight.bold)))
+                          ],
+                        );
+                      });
+                } else {
                   Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CreateNewCommunity()));
+                      builder: (context) => CreateNewCommunity()));
                 }
               },
               child: Icon(Icons.add),
@@ -72,6 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  authData.loggedInUser.accountType == "admin" ?
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AdminPanelScreen()));
+                      },
+                      child: Text("Admin Panel")) : Container(),
                   SizedBox(height: 10),
                   HomeBanner(),
                   Padding(

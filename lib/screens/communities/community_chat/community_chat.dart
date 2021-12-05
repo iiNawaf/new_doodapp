@@ -54,7 +54,8 @@ class CommunityChatScreen extends StatelessWidget {
             ),
           ),
           ChatTextField(
-              controller: messageController, community: community)
+              controller: messageController, community: community),
+              SizedBox(height: 10,),
         ]),
       ),
     );

@@ -54,38 +54,36 @@ class _ChatContentState extends State<ChatContent> {
                         ? CrossAxisAlignment.start
                         : CrossAxisAlignment.end,
                     children: [
+                      !isSender(authData) ? Text(
+                        "${widget.communityChat.sender}",
+                        style: TextStyle(
+                            color: titleBlackColor,
+                            height: 1,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ) : Container(),
                       Container(
-                        padding: EdgeInsets.all(15),
+                        padding: EdgeInsets.only(
+                            left: 8, top: 5, bottom: 5, right: 8),
                         decoration: BoxDecoration(
                             color: isSender(authData)
                                 ? appColor
                                 : appColor.withOpacity(0.4),
                             borderRadius: isSender(authData)
                                 ? BorderRadius.only(
-                                    topRight: Radius.circular(10),
-                                    topLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10),
+                                    topRight: Radius.circular(15),
+                                    topLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(15),
                                   )
                                 : BorderRadius.only(
-                                    topRight: Radius.circular(10),
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(15),
+                                    topLeft: Radius.circular(15),
+                                    bottomLeft: Radius.circular(15),
                                   )),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                isSender(authData)
-                                    ? "You"
-                                    : "${widget.communityChat.sender}",
-                                style: TextStyle(
-                                    color: isSender(authData)
-                                        ? Colors.yellow[800]
-                                        : appColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              ),
                               SizedBox(height: 8),
                               Text(
                                 "${widget.communityChat.content}",
@@ -101,62 +99,78 @@ class _ChatContentState extends State<ChatContent> {
                       ),
                     ]),
               ),
-              widget.communityChat.senderID != authData.loggedInUser.id ?
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: GestureDetector(
-                    onTap: () async {
-                      showDialog(
-                        barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return StatefulBuilder(
-                                builder: (context, setState) {
-                              return isLoading ? GeneralLoading() 
-                              : AppAlertDialog(
-                                title: Text("Report User",
-                                    style: TextStyle(fontSize: 19)),
-                                content: Text("Are you sure you want to report this user?"),
-                                actions: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GestureDetector(
-                                        onTap: () async {
-                                          setState(() {
-                                            isLoading = true;
-                                          });
-                                          await rp.submitCommunityChatReport(
-                                            widget.communityChat.communityID,
-                                            widget.communityChat.senderID,
-                                            widget.communityChat.sender,
-                                            widget.communityChat.content,
+              widget.communityChat.senderID != authData.loggedInUser.id
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: GestureDetector(
+                          onTap: () async {
+                            showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) {
+                                  return StatefulBuilder(
+                                      builder: (context, setState) {
+                                    return isLoading
+                                        ? GeneralLoading()
+                                        : AppAlertDialog(
+                                            title: Text("Report User",
+                                                style: TextStyle(fontSize: 19)),
+                                            content: Text(
+                                                "Are you sure you want to report this user?"),
+                                            actions: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: GestureDetector(
+                                                    onTap: () async {
+                                                      setState(() {
+                                                        isLoading = true;
+                                                      });
+                                                      await rp
+                                                          .submitCommunityChatReport(
+                                                        widget.communityChat
+                                                            .communityID,
+                                                        widget.communityChat
+                                                            .senderID,
+                                                        widget.communityChat
+                                                            .sender,
+                                                        widget.communityChat
+                                                            .content,
+                                                      );
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      CommunityChatScreen
+                                                          .scaffoldKey
+                                                          .currentState
+                                                          .showSnackBar(
+                                                              SnackBar(
+                                                        content: Text(
+                                                            "User successfully reported!"),
+                                                      ));
+                                                    },
+                                                    child: Text("Yes")),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: GestureDetector(
+                                                    onTap: () =>
+                                                        Navigator.pop(context),
+                                                    child: Text("No")),
+                                              )
+                                            ],
                                           );
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                          Navigator.pop(context);
-                                          CommunityChatScreen.scaffoldKey.currentState.showSnackBar(
-                                            SnackBar(content: Text("User successfully reported!"),)
-                                          );
-                                        },
-                                        child: Text("Yes")),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GestureDetector(
-                                        onTap: () => Navigator.pop(context),
-                                        child: Text("No")),
-                                  )
-                                ],
-                              );
-                            });
-                          });
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: appColor,
-                      child: Icon(Icons.flag, color: Colors.white),
-                    )),
-              ) : Container(),
+                                  });
+                                });
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: appColor,
+                            child: Icon(Icons.flag, color: Colors.white),
+                          )),
+                    )
+                  : Container(),
             ],
           )
         : Container();

@@ -4,6 +4,7 @@ import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/banner_provider.dart';
 import 'package:doodapp/providers/category_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
+import 'package:doodapp/providers/dood_area_provider.dart';
 import 'package:doodapp/providers/reports_provider.dart';
 import 'package:doodapp/screens/communities/community_chat/community_chat.dart';
 import 'package:doodapp/screens/communities/create_new_community/create_new_community.dart';
@@ -49,6 +50,9 @@ class _MyAppState extends State<MyApp> {
           ),
           ChangeNotifierProvider.value(
           value: BannerProvider()
+          ),
+          ChangeNotifierProvider.value(
+          value: DoodAreaProvider()
           ),
       ],
       child: GestureDetector(

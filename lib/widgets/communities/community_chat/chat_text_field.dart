@@ -28,7 +28,9 @@ class _ChatTextFieldState extends State<ChatTextField> {
       child: TextFormField(
         controller: widget.controller,
         validator: (value) => value.isEmpty ? "" : null,
+        cursorColor: Colors.grey,
         decoration: InputDecoration(
+          focusedBorder: InputBorder.none,
             hintText: "Type a message...",
             suffixIcon: isLoading 
             ? Icon(Icons.send, color: appColor)
