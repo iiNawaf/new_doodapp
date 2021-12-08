@@ -8,6 +8,7 @@ class UserModel {
   String accountType;
   String status;
   List<dynamic> communitiesJoined;
+  List<dynamic> blockedUsers;
 
   UserModel(
       {this.status,
@@ -17,5 +18,6 @@ class UserModel {
       this.phoneNumber,
       this.profileImage,
       this.accountType,
-      this.communitiesJoined});
+      this.communitiesJoined,
+      this.blockedUsers});
 }

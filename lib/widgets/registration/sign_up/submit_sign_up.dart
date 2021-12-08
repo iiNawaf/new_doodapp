@@ -65,7 +65,7 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
               isLoading = true;
             });
             await auth.signUp(
-                widget.email.text, widget.password.text, widget.username.text, int.parse(widget.phoneNumber.text));
+                widget.email.text, widget.password.text, widget.username.text);
             Navigator.of(context).popUntil((route) => route.isFirst);
             setState(() {
               isLoading = false;

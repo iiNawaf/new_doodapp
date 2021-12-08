@@ -72,7 +72,7 @@ class _UserImageState extends State<UserImage> {
                   : CircleAvatar(
                     backgroundColor: appColor,
                     child: isLoading 
-                    ? ImageLoading() : Icon(
+                    ? CircularProgressIndicator() : Icon(
                         HomeScreen.userImage != null ? Icons.done : Icons.edit,
                         color: Colors.white),
                   ),

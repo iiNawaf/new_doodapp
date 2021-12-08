@@ -111,9 +111,11 @@ class _MyAppState extends State<MyApp> {
                   return GeneralLoading();
                 if (!snapshot.hasData) return Center(child: Text("No data"));
                 return snapshot.data == ConnectivityResult.none
-                    ? Center(
-                        child: Text("No network connection."),
-                      )
+                    ? Scaffold(
+                      body: Center(
+                          child: Text("No network connection."),
+                        ),
+                    )
                     : AuthWrapper();
               },
             )),

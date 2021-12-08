@@ -8,7 +8,7 @@ class HomeLoading extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text("Preparing Dood Data...",
+        Text("Please wait...",
         style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
         ),
         SpinKitPulse(color: appColor),

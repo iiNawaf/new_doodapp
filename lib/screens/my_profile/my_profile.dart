@@ -5,7 +5,7 @@ import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/communities/community_chat/community_chat.dart';
 import 'package:doodapp/shared/cached_image.dart';
 import 'package:doodapp/shared/utilities.dart';
-import 'package:doodapp/widgets/my_profile/user_image.dart';
+import 'package:doodapp/widgets/home/user_image.dart';
 import 'package:doodapp/widgets/my_profile/username.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,13 +26,21 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            UserImage(imgUrl: authProvider.loggedInUser.profileImage),
+            UserImage(),
             Username(username: authProvider.loggedInUser.username),
             SizedBox(height: 20),
             _switchButton(),
             SizedBox(height: 10),
             _switchResult(
                 authProvider.loggedInUser, communityProvider.communityList),
+            GestureDetector(
+              onTap: () async => authProvider.signOut(),
+              child: ListTile(
+                leading: Icon(Icons.logout),
+                title: Text("Sign Out"),
+              ),
+            )
+            
           ],
         ),
       ),

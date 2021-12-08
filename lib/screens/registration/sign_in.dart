@@ -48,18 +48,18 @@ class _SignInScreenState extends State<SignInScreen> {
                     SizedBox(height: 15),
                     SignInPassword(controller: passwordController),
                     SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            "Forgot Password?",
-                            style: TextStyle(color: appColor, fontSize: 15),
-                          ),
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [
+                    //     GestureDetector(
+                    //       onTap: () {},
+                    //       child: Text(
+                    //         "Forgot Password?",
+                    //         style: TextStyle(color: appColor, fontSize: 15),
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
                     SizedBox(height: 40),
                     SubmitSignIn(
                       emailController: emailController,

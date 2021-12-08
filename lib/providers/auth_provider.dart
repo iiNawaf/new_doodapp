@@ -19,11 +19,11 @@ class AuthProvider with ChangeNotifier {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  Future signUp(String email, String password, String username, int number) async {
+  Future signUp(String email, String password, String username) async {
     UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     if (result.user != null) {
-      await createUserData(result.user.uid, email, username, number);
+      await createUserData(result.user.uid, email, username);
     }
   }
 
@@ -34,18 +34,19 @@ class AuthProvider with ChangeNotifier {
   // Database operations
   final usersCollection = FirebaseFirestore.instance.collection('users_info');
 
-  Future createUserData(String id, String email, String username, int number) async {
+  Future createUserData(String id, String email, String username) async {
     // TODO: check if username or email exist
     await usersCollection.doc(id).set({
       'id': id,
       'email': email,
       'username': username.toLowerCase(),
-      'phone_number': number,
+      'phone_number': 0,
       'profile_image':
           'https://firebasestorage.googleapis.com/v0/b/doodapp-ebf46.appspot.com/o/users_images%2F23848476-cute-pink-worm-cartoon.jpg?alt=media&token=f3a1d4c3-3bf0-4485-9af6-905e040841b8',
       'account_type': 'normal_user',
       'status': 'active',
       'communities_joined': [],
+      'blocked_users': []
     });
   }
 
@@ -60,6 +61,7 @@ class AuthProvider with ChangeNotifier {
       status: snapshot.data()['status'],
       communitiesJoined: snapshot.data()['communities_joined'],
       phoneNumber: snapshot.data()['phone_number'],
+      blockedUsers: snapshot.data()['blocked_users'],
     );
   }
 
@@ -76,4 +78,17 @@ class AuthProvider with ChangeNotifier {
     await docRef.update({'profile_image': imgUrl});
   }
 
+  Future<void> blockUser(String uid, String blockedUID) async{
+    await usersCollection.doc(uid).update({
+      'blocked_users': FieldValue.arrayUnion([blockedUID])
+    }).then((value) => fetchUserData());
+    notifyListeners();
+  }
+
+    Future<void> unBlockUser(String uid, String blockedUID) async{
+    await usersCollection.doc(uid).update({
+      'blocked_users': FieldValue.arrayRemove([blockedUID])
+    }).then((value) => fetchUserData());
+    notifyListeners();
+  }
 }
