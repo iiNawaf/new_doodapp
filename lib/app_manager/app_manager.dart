@@ -10,6 +10,7 @@ import 'package:doodapp/screens/dood_area/dood_area.dart';
 import 'package:doodapp/screens/message/message_list.dart';
 import 'package:doodapp/screens/home/home.dart';
 import 'package:doodapp/screens/my_profile/my_profile.dart';
+import 'package:doodapp/screens/user_agreement/user_agreement.dart';
 import 'package:doodapp/shared/custom_dialog.dart';
 import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/side/appbar.dart';
@@ -91,7 +92,11 @@ class _AppManagerState extends State<AppManager> {
   Widget build(BuildContext context) {
     final doodProvider = Provider.of<DoodAreaProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    return Scaffold(
+    return isLoading 
+    ? HomeLoading() 
+    : !authProvider.loggedInUser.didAgreeTerms 
+    ? UserAgreementScreen() 
+    : Scaffold(
         backgroundColor: selectedIndex == 2 ? bgDarkColor : bgColor,
         floatingActionButton: selectedIndex == 2
             ? FloatingActionButton(
@@ -175,9 +180,7 @@ class _AppManagerState extends State<AppManager> {
                                   : "Profile",
                 ),
               ),
-        bottomNavigationBar: isLoading
-            ? HomeLoading()
-            : Container(
+        bottomNavigationBar: Container(
                 height: 100,
                 child: BubbleBottomBar(
                   opacity: .2,
@@ -196,7 +199,8 @@ class _AppManagerState extends State<AppManager> {
                   ],
                 ),
               ),
-        body: isLoading ? HomeLoading() : screens.elementAt(selectedIndex));
+        body: screens.elementAt(selectedIndex)
+        );
   }
 
   BubbleBottomBarItem navItem(String title, String img) {

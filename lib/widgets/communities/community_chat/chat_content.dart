@@ -46,6 +46,7 @@ class _ChatContentState extends State<ChatContent> {
         return false;
       }
     }
+    return false;
   }
 
   bool isLoading = false;

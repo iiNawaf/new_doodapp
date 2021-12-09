@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/dood_area_provider.dart';
 import 'package:doodapp/providers/reports_provider.dart';
+import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/widgets/loading/general_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ class AdminPanelScreen extends StatelessWidget {
     final rp = Provider.of<ReportsProvider>(context);
     final doodAreaProvider = Provider.of<DoodAreaProvider>(context);
     return Scaffold(
-      appBar: AppBar(title: Text("Admin Panel"),),
+      appBar: AppBar(title: Text("Admin Panel", style: TextStyle(color: titleBlackColor),)),
       body: authData.loggedInUser.accountType != "admin"
       ? Center(child: Text("Unauthorized access!"),) 
       : Padding(

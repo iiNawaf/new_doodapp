@@ -46,23 +46,24 @@ class AuthProvider with ChangeNotifier {
       'account_type': 'normal_user',
       'status': 'active',
       'communities_joined': [],
-      'blocked_users': []
+      'blocked_users': [],
+      'did_agree_terms': false,
     });
   }
 
   Future<void> fetchUserData() async {
     final snapshot = await usersCollection.doc(user.uid).get();
     loggedInUser = UserModel(
-      id: user.uid,
-      email: user.email,
-      username: snapshot.data()['username'],
-      profileImage: snapshot.data()['profile_image'],
-      accountType: snapshot.data()['account_type'],
-      status: snapshot.data()['status'],
-      communitiesJoined: snapshot.data()['communities_joined'],
-      phoneNumber: snapshot.data()['phone_number'],
-      blockedUsers: snapshot.data()['blocked_users'],
-    );
+        id: user.uid,
+        email: user.email,
+        username: snapshot.data()['username'],
+        profileImage: snapshot.data()['profile_image'],
+        accountType: snapshot.data()['account_type'],
+        status: snapshot.data()['status'],
+        communitiesJoined: snapshot.data()['communities_joined'],
+        phoneNumber: snapshot.data()['phone_number'],
+        blockedUsers: snapshot.data()['blocked_users'],
+        didAgreeTerms: snapshot.data()['did_agree_terms']);
   }
 
   Future<void> updateUserImage(String uid, File image) async {
@@ -78,17 +79,22 @@ class AuthProvider with ChangeNotifier {
     await docRef.update({'profile_image': imgUrl});
   }
 
-  Future<void> blockUser(String uid, String blockedUID) async{
+  Future<void> blockUser(String uid, String blockedUID) async {
     await usersCollection.doc(uid).update({
       'blocked_users': FieldValue.arrayUnion([blockedUID])
     }).then((value) => fetchUserData());
     notifyListeners();
   }
 
-    Future<void> unBlockUser(String uid, String blockedUID) async{
+  Future<void> unBlockUser(String uid, String blockedUID) async {
     await usersCollection.doc(uid).update({
       'blocked_users': FieldValue.arrayRemove([blockedUID])
     }).then((value) => fetchUserData());
+    notifyListeners();
+  }
+
+  Future<void> agreeTerms(String uid) async {
+    await usersCollection.doc(uid).update({'did_agree_terms': true});
     notifyListeners();
   }
 }

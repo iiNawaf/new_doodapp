@@ -9,6 +9,7 @@ class UserModel {
   String status;
   List<dynamic> communitiesJoined;
   List<dynamic> blockedUsers;
+  bool didAgreeTerms;
 
   UserModel(
       {this.status,
@@ -19,5 +20,7 @@ class UserModel {
       this.profileImage,
       this.accountType,
       this.communitiesJoined,
-      this.blockedUsers});
+      this.blockedUsers,
+      this.didAgreeTerms
+      });
 }

@@ -32,7 +32,7 @@ class _CommunityInfoScreenState extends State<CommunityInfoScreen> {
       ),
       body: Column(children: [
         CommunityDetails(community: widget.community),
-        widget.community.ownerID == authData.loggedInUser.id
+        widget.community.ownerID == authData.loggedInUser.id || authData.loggedInUser.accountType == "admin"
             ? DeleteCommunity(
                 community: widget.community) : Container(),
       ]),

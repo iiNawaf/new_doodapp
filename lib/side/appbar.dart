@@ -93,10 +93,38 @@ class ApplicationBar extends StatelessWidget {
                 icon: Icon(Icons.add, size: 29),
               )
             : isCommunityChat == true 
-            ? IconButton(
+            ? Row(
+              children: [
+                IconButton(
+                onPressed: () {
+                  showDialog(context: context, builder: (context){
+                    return AppAlertDialog(
+                      content: Text("Do you want to report this community?"),
+                      actions: [
+                        GestureDetector(
+                          onTap: (){
+                            
+                          },
+                          child: Text("Yes"),
+                        ),
+                        GestureDetector(
+                          onTap: (){
+
+                          },
+                          child: Text("No"),
+                        )
+                      ],
+                    );
+                  });
+                },
+                icon: Icon(Icons.flag, size: 29),
+              ),
+                IconButton(
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CommunityInfoScreen(community: community))),
                 icon: Icon(Icons.info, size: 29),
-              ): Container()
+              )
+              ],
+            ): Container()
       ],
     );
   }
