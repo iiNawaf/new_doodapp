@@ -23,6 +23,10 @@ class _UserAgreementScreenState extends State<UserAgreementScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              IconButton(
+                onPressed: () async => authProvider.signOut(), 
+                icon: Icon(Icons.arrow_back_ios)
+                ),
               Text(
                 "User Agreement",
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
@@ -68,7 +72,7 @@ class _UserAgreementScreenState extends State<UserAgreementScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: // Agree Button
+      bottomNavigationBar:
           Padding(
             padding: const EdgeInsets.only(top:15, bottom: 30, left: 15, right: 15),
             child: isLoading ? GeneralLoading() 
