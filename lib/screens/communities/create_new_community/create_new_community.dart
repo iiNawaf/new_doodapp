@@ -7,12 +7,12 @@ import 'package:doodapp/widgets/communities/create_new_community/community_title
 import 'package:doodapp/widgets/communities/create_new_community/submit_community.dart';
 import 'package:flutter/material.dart';
 
-
 class CreateNewCommunity extends StatefulWidget {
   static String routeName = "/screens/communities/create_new_community.dart";
   static GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  static Category category;
+  static GlobalKey<ScaffoldMessengerState> scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
+  static Category? category;
 
   @override
   _CreateNewCommunityState createState() => _CreateNewCommunityState();
@@ -24,7 +24,7 @@ class _CreateNewCommunityState extends State<CreateNewCommunity> {
   bool isLoading = false;
 
   @override
-  void dispose() { 
+  void dispose() {
     communityTitleController.clear();
     communityBioController.clear();
     ChooseCommunityImage.communityImage = null;
@@ -37,7 +37,10 @@ class _CreateNewCommunityState extends State<CreateNewCommunity> {
       key: CreateNewCommunity.scaffoldKey,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
-        child: ApplicationBar(isCreateNewCommunity: true, title: "Create Community",),
+        child: ApplicationBar(
+          isCreateNewCommunity: true,
+          title: "Create Community",
+        ),
       ),
       body: Form(
         key: CreateNewCommunity.formKey,
@@ -57,6 +60,7 @@ class _CreateNewCommunityState extends State<CreateNewCommunity> {
               SubmitCommunity(
                 title: communityTitleController,
                 bio: communityBioController,
+                submit: () {},
               )
             ],
           ),

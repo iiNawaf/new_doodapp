@@ -27,12 +27,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         child: Column(
           children: [
             UserImage(),
-            Username(username: authProvider.loggedInUser.username),
+            Username(username: authProvider.loggedInUser?.username ?? ''),
             SizedBox(height: 20),
             _switchButton(),
             SizedBox(height: 10),
             _switchResult(
-                authProvider.loggedInUser, communityProvider.communityList),
+                authProvider.loggedInUser!, communityProvider.communityList),
             GestureDetector(
               onTap: () async => authProvider.signOut(),
               child: ListTile(
@@ -40,7 +40,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 title: Text("Sign Out"),
               ),
             )
-            
           ],
         ),
       ),
@@ -111,23 +110,29 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: communityList.length,
             itemBuilder: (context, index) {
-              return communityList[index].ownerID == loggedInUser.id ? Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: GestureDetector(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CommunityChatScreen(community: communityList[index],))),
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: tileColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
+              return communityList[index].ownerID == loggedInUser.id
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: GestureDetector(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CommunityChatScreen(
+                                      community: communityList[index],
+                                    ))),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: tileColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
@@ -139,51 +144,65 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                     height: 70,
                                     width: 70,
                                   ),
-                        SizedBox(width: 5),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${communityList[index].title}",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            Container(
-                              width: 200,
-                                child: Text(
-                              "${communityList[index].bio}",
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: communitySubtitleColor,
+                                  SizedBox(width: 5),
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${communityList[index].title}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
+                                      Container(
+                                          width: 200,
+                                          child: Text(
+                                            "${communityList[index].bio}",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: communitySubtitleColor,
+                                            ),
+                                          ))
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ))
-                          ],
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: communitySubtitleColor,
+                              )
+                            ],
+                          ),
                         ),
-                          ],
-                        ),
-                        Icon(Icons.arrow_forward_ios, color: communitySubtitleColor,)
-                      ],
-                    ),
-                  ),
-                ),
-              ) : Container();
+                      ),
+                    )
+                  : Container();
             },
           )
         : Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Email", style: TextStyle(color: Color(0xffB7B2B2)),),
-            Container(
-              padding: EdgeInsets.all(10),
-              height: 50,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: containerColor,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Email",
+                style: TextStyle(color: Color(0xffB7B2B2)),
               ),
-              child: Text("${loggedInUser.email}", style: TextStyle(fontWeight: FontWeight.bold),),
-            ),
-          ],
-        );
+              Container(
+                padding: EdgeInsets.all(10),
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: containerColor,
+                ),
+                child: Text(
+                  "${loggedInUser.email}",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          );
   }
 }

@@ -3,7 +3,6 @@ import 'package:doodapp/models/community.dart';
 import 'package:doodapp/providers/category_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/communities/community_chat/community_chat.dart';
-import 'package:doodapp/screens/home/all_communities.dart';
 import 'package:doodapp/screens/home/show_all_category_communities.dart';
 import 'package:doodapp/shared/cached_image.dart';
 import 'package:doodapp/shared/utilities.dart';
@@ -22,33 +21,35 @@ class DiscoverScreen extends StatelessWidget {
         child: Column(
           children: [
             ListView.builder(
-              itemCount: categoryProvider.categoryList.length,
+              itemCount: categoryProvider.categoryList?.length,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          titlePreview(
-                              categoryProvider.categoryList[index],
-                              communityProvider.communityList,
-                              context),
-                          Container(
-                            height: 120,
-                            child: ListView.builder(
-                              itemCount: communityProvider.communityList.length,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index2) {
-                                return communityProvider.communityList[index2].categoryTitle == categoryProvider.categoryList[index].title 
-                                ? previewCommunityList(
-                                        communityProvider.communityList[index2], context) : Container();
-                              },
-                            ),
-                          ),
-                        ],
-                      );
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    titlePreview(categoryProvider.categoryList![index],
+                        communityProvider.communityList, context),
+                    Container(
+                      height: 120,
+                      child: ListView.builder(
+                        itemCount: communityProvider.communityList.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index2) {
+                          return communityProvider
+                                      .communityList[index2].categoryTitle ==
+                                  categoryProvider.categoryList![index].title
+                              ? previewCommunityList(
+                                  communityProvider.communityList[index2],
+                                  context)
+                              : Container();
+                        },
+                      ),
+                    ),
+                  ],
+                );
               },
             ),
           ],
@@ -78,7 +79,12 @@ class DiscoverScreen extends StatelessWidget {
 
   Widget previewCommunityList(Community community, BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CommunityChatScreen(community: community,))),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CommunityChatScreen(
+                    community: community,
+                  ))),
       child: Padding(
         padding: const EdgeInsets.only(top: 8, right: 8),
         child: Container(

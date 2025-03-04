@@ -7,11 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SubmitSignUp extends StatefulWidget {
-  TextEditingController username;
-  TextEditingController email;
-  TextEditingController password;
-  TextEditingController phoneNumber;
-  SubmitSignUp({this.password, this.email, this.username, this.phoneNumber});
+  final TextEditingController username;
+  final TextEditingController email;
+  final TextEditingController password;
+  final TextEditingController? phoneNumber;
+  SubmitSignUp({
+    required this.password,
+    required this.email,
+    required this.username,
+    this.phoneNumber,
+  });
 
   @override
   _SubmitSignUpState createState() => _SubmitSignUpState();
@@ -47,9 +52,9 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
           );
   }
 
-  Future<void> _signUp(String username, AuthProvider auth) {
+  Future<void> _signUp(String username, AuthProvider auth) async {
     try {
-      if (SignUpScreen.formKey.currentState.validate()) {
+      if (SignUpScreen.formKey.currentState!.validate()) {
         String tempUser = "";
         FirebaseFirestore.instance
             .collection('users_info')
@@ -75,7 +80,7 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
               isLoading = false;
             });
             Future.delayed(const Duration(milliseconds: 600), () {
-              SignUpScreen.scaffoldKey.currentState.showSnackBar(SnackBar(
+              SignUpScreen.scaffoldKey.currentState!.showSnackBar(SnackBar(
                 content: Text("Username is taken."),
               ));
             });
@@ -83,7 +88,7 @@ class _SubmitSignUpState extends State<SubmitSignUp> {
         });
       }
     } catch (e) {
-      SignUpScreen.scaffoldKey.currentState.showSnackBar(SnackBar(
+      SignUpScreen.scaffoldKey.currentState!.showSnackBar(SnackBar(
         content: Text("Email address is already exist. $e"),
       ));
     }

@@ -1,5 +1,4 @@
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
-import 'package:doodapp/admin_panel/admin_panel.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/banner_provider.dart';
 import 'package:doodapp/providers/category_provider.dart';
@@ -27,7 +26,7 @@ class AppManager extends StatefulWidget {
 class _AppManagerState extends State<AppManager> {
   bool isInit = true;
   bool isLoading = false;
-  int selectedIndex = 0;
+  int? selectedIndex = 0;
   TextEditingController msgController = TextEditingController();
 
   @override
@@ -74,7 +73,7 @@ class _AppManagerState extends State<AppManager> {
     super.didChangeDependencies();
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int? index) {
     setState(() {
       selectedIndex = index;
     });
@@ -92,115 +91,124 @@ class _AppManagerState extends State<AppManager> {
   Widget build(BuildContext context) {
     final doodProvider = Provider.of<DoodAreaProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    return isLoading 
-    ? HomeLoading() 
-    : !authProvider.loggedInUser.didAgreeTerms 
-    ? UserAgreementScreen() 
-    : Scaffold(
-        backgroundColor: selectedIndex == 2 ? bgDarkColor : bgColor,
-        floatingActionButton: selectedIndex == 2
-            ? FloatingActionButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return isLoading
-                            ? Center(child: GeneralLoading())
-                            : AppAlertDialog(
-                                isDoodArea: true,
-                                title: Text(
-                                  "Send Dood",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      color: titleColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                content: Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xff424242),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: TextField(
-                                      style: TextStyle(color: titleColor),
-                                      maxLength: 120,
-                                      controller: msgController,
-                                      decoration: InputDecoration(
-                                        focusedBorder: InputBorder.none,
-                                        hintText: "Type a message...",
-                                        hintStyle: TextStyle(color: titleColor),
-                                        counterText: "",
-                                      )),
-                                ),
-                                actions: [
-                                  isLoading
-                                      ? GeneralLoading()
-                                      : TextButton(
-                                          onPressed: () {
-                                            if (msgController.text.length > 0) {
-                                              setState(() {
-                                                isLoading = true;
-                                              });
-                                              doodProvider.sendDood(
-                                                  msgController.text,
-                                                  authProvider.loggedInUser.id);
-                                              Navigator.pop(context);
-                                              setState(() {
-                                                isLoading = false;
-                                              });
-                                            }
-                                          },
-                                          child: Text(
-                                            "Submit",
-                                            style: TextStyle(color: appColor),
-                                          ))
-                                ],
-                              );
-                      });
-                },
-                backgroundColor: Color(0xff424242),
-                child: Icon(Icons.add),
-              )
-            : Container(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        appBar: isLoading
-            ? AppBar()
-            : PreferredSize(
-                preferredSize: Size.fromHeight(65),
-                child: ApplicationBar(
-                  selectedIndex: selectedIndex,
-                  isAppManager: true,
-                  title: selectedIndex == 0
-                      ? "Home"
-                      : selectedIndex == 1
-                          ? "Messages"
-                          : selectedIndex == 2
-                              ? "DoodArea"
-                              : selectedIndex == 3
-                                  ? "Discover"
-                                  : "Profile",
+    return isLoading
+        ? HomeLoading()
+        : authProvider.loggedInUser?.didAgreeTerms == false
+            ? UserAgreementScreen()
+            : Scaffold(
+                backgroundColor: selectedIndex == 2 ? bgDarkColor : bgColor,
+                floatingActionButton: selectedIndex == 2
+                    ? FloatingActionButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return isLoading
+                                    ? Center(child: GeneralLoading())
+                                    : AppAlertDialog(
+                                        isDoodArea: true,
+                                        title: Text(
+                                          "Send Dood",
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              color: titleColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        content: Container(
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xff424242),
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: TextField(
+                                              style:
+                                                  TextStyle(color: titleColor),
+                                              maxLength: 120,
+                                              controller: msgController,
+                                              decoration: InputDecoration(
+                                                focusedBorder: InputBorder.none,
+                                                hintText: "Type a message...",
+                                                hintStyle: TextStyle(
+                                                    color: titleColor),
+                                                counterText: "",
+                                              )),
+                                        ),
+                                        actions: [
+                                          isLoading
+                                              ? GeneralLoading()
+                                              : TextButton(
+                                                  onPressed: () {
+                                                    if (msgController
+                                                            .text.length >
+                                                        0) {
+                                                      setState(() {
+                                                        isLoading = true;
+                                                      });
+                                                      doodProvider.sendDood(
+                                                        msgController.text,
+                                                        authProvider
+                                                                .loggedInUser
+                                                                ?.id ??
+                                                            '',
+                                                      );
+                                                      Navigator.pop(context);
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    "Submit",
+                                                    style: TextStyle(
+                                                        color: appColor),
+                                                  ))
+                                        ],
+                                      );
+                              });
+                        },
+                        backgroundColor: Color(0xff424242),
+                        child: Icon(Icons.add),
+                      )
+                    : Container(),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerFloat,
+                appBar: isLoading
+                    ? AppBar()
+                    : PreferredSize(
+                        preferredSize: Size.fromHeight(65),
+                        child: ApplicationBar(
+                          selectedIndex: selectedIndex ?? 0,
+                          isAppManager: true,
+                          title: selectedIndex == 0
+                              ? "Home"
+                              : selectedIndex == 1
+                                  ? "Messages"
+                                  : selectedIndex == 2
+                                      ? "DoodArea"
+                                      : selectedIndex == 3
+                                          ? "Discover"
+                                          : "Profile",
+                        ),
+                      ),
+                bottomNavigationBar: Container(
+                  height: 100,
+                  child: BubbleBottomBar(
+                    opacity: .2,
+                    backgroundColor:
+                        selectedIndex == 2 ? Color(0xff303030) : appColor,
+                    currentIndex: selectedIndex,
+                    onTap: _onItemTapped,
+                    elevation: 0,
+                    items: [
+                      navItem("Home", './assets/icons/home.png'),
+                      navItem("Messages", './assets/icons/message.png'),
+                      navItem("DoodArea", './assets/icons/incognito.png'),
+                      navItem("Discover", './assets/icons/compass.png'),
+                      navItem("My Profile", './assets/icons/profile_icon.png'),
+                    ],
+                  ),
                 ),
-              ),
-        bottomNavigationBar: Container(
-                height: 100,
-                child: BubbleBottomBar(
-                  opacity: .2,
-                  backgroundColor:
-                      selectedIndex == 2 ? Color(0xff303030) : appColor,
-                  currentIndex: selectedIndex,
-                  onTap:
-                      _onItemTapped, //border radius doesn't work when the notch is enabled.
-                  elevation: 0,
-                  items: [
-                    navItem("Home", './assets/icons/home.png'),
-                    navItem("Messages", './assets/icons/message.png'),
-                    navItem("DoodArea", './assets/icons/incognito.png'),
-                    navItem("Discover", './assets/icons/compass.png'),
-                    navItem("My Profile", './assets/icons/profile_icon.png'),
-                  ],
-                ),
-              ),
-        body: screens.elementAt(selectedIndex)
-        );
+                body: screens.elementAt(selectedIndex ?? 0));
   }
 
   BubbleBottomBarItem navItem(String title, String img) {

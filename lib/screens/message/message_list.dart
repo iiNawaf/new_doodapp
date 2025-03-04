@@ -34,7 +34,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
             SizedBox(height: 10),
             _buildListButton(),
             _buildMessageList(
-                authData.loggedInUser, communityProvider.communityList),
+                authData.loggedInUser!, communityProvider.communityList),
           ],
         ),
       ),
@@ -116,14 +116,14 @@ class _MessageListScreenState extends State<MessageListScreen> {
                                 community: communityList[index],
                               ))),
                   child: Container(
-                    padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: tileColor,
-                            ),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: tileColor,
+                      ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
@@ -147,19 +147,22 @@ class _MessageListScreenState extends State<MessageListScreen> {
                                   Text(
                                     communityList[index].title,
                                     style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        ),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   Container(
                                     width: 200,
                                     child: Text(
-                                      communityList[index].lastMessage.isEmpty
+                                      communityList[index]
+                                                  .lastMessage
+                                                  ?.isEmpty ==
+                                              true
                                           ? ". . ."
                                           : "${communityList[index].lastMessage}",
-                                      style:
-                                          TextStyle(color: communitySubtitleColor),
-                                          overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: communitySubtitleColor),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ],

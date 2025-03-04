@@ -1,5 +1,4 @@
-import 'package:connectivity/connectivity.dart';
-import 'package:doodapp/app_manager/app_manager.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/banner_provider.dart';
 import 'package:doodapp/providers/category_provider.dart';
@@ -45,15 +44,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(
           value: ReportsProvider(),
         ),
-        ChangeNotifierProvider.value(
-          value: CategoryProvider()
-          ),
-          ChangeNotifierProvider.value(
-          value: BannerProvider()
-          ),
-          ChangeNotifierProvider.value(
-          value: DoodAreaProvider()
-          ),
+        ChangeNotifierProvider.value(value: CategoryProvider()),
+        ChangeNotifierProvider.value(value: BannerProvider()),
+        ChangeNotifierProvider.value(value: DoodAreaProvider()),
       ],
       child: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -69,11 +62,11 @@ class _MyAppState extends State<MyApp> {
                   elevation: 0,
                   backgroundColor: bgColor,
                 ),
-                textTheme: TextTheme(
-                  headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-                  title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-                  body1: TextStyle(color: Colors.black),
-                ),
+                // textTheme: TextTheme(
+                //   headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                //   title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+                //   body1: TextStyle(color: Colors.black),
+                // ),
                 inputDecorationTheme: InputDecorationTheme(
                     border: InputBorder.none,
                     labelStyle: TextStyle(color: inputLabelColor),
@@ -101,10 +94,11 @@ class _MyAppState extends State<MyApp> {
               SignInScreen.routeName: (context) => SignInScreen(),
               SignUpScreen.routeName: (context) => SignUpScreen(),
               CreateNewCommunity.routeName: (context) => CreateNewCommunity(),
-              AllCommunitiesScreen.routeName: (context) => AllCommunitiesScreen(),
+              AllCommunitiesScreen.routeName: (context) =>
+                  AllCommunitiesScreen(),
               CommunityChatScreen.routeName: (context) => CommunityChatScreen(),
             },
-            home: FutureBuilder<ConnectivityResult>(
+            home: FutureBuilder<List<ConnectivityResult>>(
               future: _buildAppStatus(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting)
@@ -112,10 +106,10 @@ class _MyAppState extends State<MyApp> {
                 if (!snapshot.hasData) return Center(child: Text("No data"));
                 return snapshot.data == ConnectivityResult.none
                     ? Scaffold(
-                      body: Center(
+                        body: Center(
                           child: Text("No network connection."),
                         ),
-                    )
+                      )
                     : AuthWrapper();
               },
             )),
@@ -124,6 +118,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-Future<ConnectivityResult> _buildAppStatus() async {
+Future<List<ConnectivityResult>> _buildAppStatus() async {
   return await Connectivity().checkConnectivity();
 }

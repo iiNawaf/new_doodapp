@@ -4,12 +4,11 @@ import 'package:doodapp/screens/communities/community_chat/community_chat.dart';
 import 'package:doodapp/shared/cached_image.dart';
 import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/side/appbar.dart';
-import 'package:doodapp/widgets/home/explore_categories.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShowAllCategoryCommunitiesScreen extends StatelessWidget {
-  Category currentCategory;
+  final Category? currentCategory;
   ShowAllCategoryCommunitiesScreen({this.currentCategory});
   @override
   Widget build(BuildContext context) {
@@ -18,8 +17,9 @@ class ShowAllCategoryCommunitiesScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: ApplicationBar(
-            isCategoryCommunities: true,
-            title: categoryTitle(currentCategory.title, titleBlackColor).data),
+          isCategoryCommunities: true,
+          title: currentCategory?.title ?? '',
+        ),
       ),
       body: communityProvider.communityList.length == 0
           ? Center(
@@ -29,7 +29,7 @@ class ShowAllCategoryCommunitiesScreen extends StatelessWidget {
               itemCount: communityProvider.communityList.length,
               itemBuilder: (ctx, index) => communityProvider
                           .communityList[index].categoryTitle ==
-                      currentCategory.title
+                      currentCategory?.title
                   ? Padding(
                       padding:
                           const EdgeInsets.only(right: 15, left: 15, top: 8),
@@ -69,15 +69,17 @@ class ShowAllCategoryCommunitiesScreen extends StatelessWidget {
                                   Container(
                                     width: 230,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                             "${communityProvider.communityList[index].title}",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                              height: 1.4,
-                                              fontSize: 18,
+                                                height: 1.4,
+                                                fontSize: 18,
                                                 fontWeight: FontWeight.bold)),
                                         Text(
                                             "${communityProvider.communityList[index].bio}",

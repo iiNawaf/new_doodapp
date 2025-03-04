@@ -1,18 +1,15 @@
 import 'package:doodapp/models/community.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
-import 'package:doodapp/screens/wrapper/auth_wrapper.dart';
-import 'package:doodapp/shared/custom_dialog.dart';
 import 'package:doodapp/side/appbar.dart';
 import 'package:doodapp/widgets/communities/community_info/delete_community.dart';
 import 'package:doodapp/widgets/communities/community_info/details.dart';
-import 'package:doodapp/widgets/loading/general_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CommunityInfoScreen extends StatefulWidget {
   Community community;
-  CommunityInfoScreen({this.community});
+  CommunityInfoScreen({required this.community});
 
   @override
   _CommunityInfoScreenState createState() => _CommunityInfoScreenState();
@@ -32,9 +29,10 @@ class _CommunityInfoScreenState extends State<CommunityInfoScreen> {
       ),
       body: Column(children: [
         CommunityDetails(community: widget.community),
-        widget.community.ownerID == authData.loggedInUser.id || authData.loggedInUser.accountType == "admin"
-            ? DeleteCommunity(
-                community: widget.community) : Container(),
+        widget.community.ownerID == authData.loggedInUser?.id ||
+                authData.loggedInUser?.accountType == "admin"
+            ? DeleteCommunity(community: widget.community)
+            : Container(),
       ]),
     );
   }

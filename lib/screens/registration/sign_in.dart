@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class SignInScreen extends StatefulWidget {
   static const routeName = "/screens/registration/sign_in.dart";
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  static bool isUsernameError;
+  static bool? isUsernameError;
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -79,10 +79,10 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: Text(
                               "Sign Up",
                               style: TextStyle(
-                                  color: appColor,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  ),
+                                color: appColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ))
                       ],
                     )

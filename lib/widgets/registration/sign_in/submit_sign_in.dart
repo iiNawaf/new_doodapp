@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SubmitSignIn extends StatefulWidget {
-  TextEditingController emailController;
-  TextEditingController passwordController;
-  SubmitSignIn({this.emailController, this.passwordController});
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  SubmitSignIn(
+      {required this.emailController, required this.passwordController});
 
   @override
   _SubmitSignInState createState() => _SubmitSignInState();
@@ -19,46 +20,47 @@ class _SubmitSignInState extends State<SubmitSignIn> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
-    return isLoading ? GeneralLoading() 
-    : GestureDetector(
-      onTap: () async{
-                setState(() {
-                  isLoading = true;
-                });
-        try{
-          if(SignInScreen.formKey.currentState.validate()){
-          await auth.signIn(widget.emailController.text, widget.passwordController.text);
-        }
-        }catch(e){
-          print(e);
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                e.toString().contains("email address is badly formatted.") 
-                ? "Email address is badly formatted." 
-                : "Wrong email or password"
+    return isLoading
+        ? GeneralLoading()
+        : GestureDetector(
+            onTap: () async {
+              setState(() {
+                isLoading = true;
+              });
+              try {
+                if (SignInScreen.formKey.currentState!.validate()) {
+                  await auth.signIn(widget.emailController.text,
+                      widget.passwordController.text);
+                }
+              } catch (e) {
+                print(e);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                      e.toString().contains("email address is badly formatted.")
+                          ? "Email address is badly formatted."
+                          : "Wrong email or password"),
+                ));
+              }
+              setState(() {
+                isLoading = false;
+              });
+            },
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                color: appColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Text(
+                  "Sign In",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
-                )
+              ),
+            ),
           );
-        }
-                setState(() {
-                  isLoading = false;
-                });
-      },
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          color: appColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Center(
-          child: Text(
-            "Sign In",
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-        ),
-      ),
-    );
   }
 }

@@ -5,18 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChooseCommunityImage extends StatefulWidget {
-  static File communityImage;
+  static File? communityImage;
   @override
   _ChooseCommunityImageState createState() => _ChooseCommunityImageState();
 }
 
 class _ChooseCommunityImageState extends State<ChooseCommunityImage> {
-    Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future getImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      ChooseCommunityImage.communityImage = image;
+      ChooseCommunityImage.communityImage =
+          pickedFile != null ? File(pickedFile.path) : null;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -33,12 +36,13 @@ class _ChooseCommunityImageState extends State<ChooseCommunityImage> {
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: appColor),
                 color: Colors.white),
-            child: ChooseCommunityImage.communityImage == null 
-            ? Icon(Icons.add) 
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Image.file(ChooseCommunityImage.communityImage, fit: BoxFit.fill),
-              ),
+            child: ChooseCommunityImage.communityImage == null
+                ? Icon(Icons.add)
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.file(ChooseCommunityImage.communityImage!,
+                        fit: BoxFit.fill),
+                  ),
             height: 80,
             width: 80,
           ),

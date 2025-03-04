@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DeleteCommunity extends StatefulWidget {
-  Community community;
-  Function submit;
+  final Community? community;
+  final Function? submit;
   DeleteCommunity({this.community, this.submit});
 
   @override
@@ -51,7 +51,7 @@ class _DeleteCommunityState extends State<DeleteCommunity> {
                     ? GeneralLoading()
                     : AppAlertDialog(
                         title: Text(
-                          "Delete ${widget.community.title}",
+                          "Delete ${widget.community?.title}",
                           style: TextStyle(fontSize: 21),
                         ),
                         content: Text(
@@ -64,7 +64,9 @@ class _DeleteCommunityState extends State<DeleteCommunity> {
                                   setState(() {
                                     isLoading = true;
                                   });
-                                  await cp.deleteCommunity(widget.community.id);
+                                  await cp.deleteCommunity(
+                                    widget.community?.id ?? '',
+                                  );
 
                                   setState(() {
                                     isLoading = false;

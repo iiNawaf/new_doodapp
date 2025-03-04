@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 
 class AuthProvider with ChangeNotifier {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  DocumentReference docRef;
-  User user;
-  UserModel loggedInUser;
+  DocumentReference? docRef;
+  User? user;
+  UserModel? loggedInUser;
 
   // Stream authentication state
-  Stream<User> get authStateChanges => _auth.authStateChanges();
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   Future signIn(String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -23,7 +23,7 @@ class AuthProvider with ChangeNotifier {
     UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     if (result.user != null) {
-      await createUserData(result.user.uid, email, username);
+      await createUserData(result.user!.uid, email, username);
     }
   }
 
@@ -52,31 +52,31 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> fetchUserData() async {
-    final snapshot = await usersCollection.doc(user.uid).get();
+    final snapshot = await usersCollection.doc(user?.uid).get();
     loggedInUser = UserModel(
-        id: user.uid,
-        email: user.email,
-        username: snapshot.data()['username'],
-        profileImage: snapshot.data()['profile_image'],
-        accountType: snapshot.data()['account_type'],
-        status: snapshot.data()['status'],
-        communitiesJoined: snapshot.data()['communities_joined'],
-        phoneNumber: snapshot.data()['phone_number'],
-        blockedUsers: snapshot.data()['blocked_users'],
-        didAgreeTerms: snapshot.data()['did_agree_terms']);
+        id: user?.uid ?? '',
+        email: user?.email ?? '',
+        username: snapshot.data()?['username'],
+        profileImage: snapshot.data()?['profile_image'],
+        accountType: snapshot.data()?['account_type'],
+        status: snapshot.data()?['status'],
+        communitiesJoined: snapshot.data()?['communities_joined'],
+        phoneNumber: snapshot.data()?['phone_number'],
+        blockedUsers: snapshot.data()?['blocked_users'],
+        didAgreeTerms: snapshot.data()?['did_agree_terms']);
   }
 
   Future<void> updateUserImage(String uid, File image) async {
     docRef = usersCollection.doc(uid);
     Reference reference =
-        FirebaseStorage.instance.ref().child('users_images/${docRef.id}');
-    String imgUrl;
+        FirebaseStorage.instance.ref().child('users_images/${docRef?.id}');
+    String? imgUrl;
     await reference.putFile(image).whenComplete(() async {
       await reference.getDownloadURL().then((value) {
         imgUrl = value;
       });
     });
-    await docRef.update({'profile_image': imgUrl});
+    await docRef!.update({'profile_image': imgUrl});
   }
 
   Future<void> blockUser(String uid, String blockedUID) async {

@@ -5,7 +5,7 @@ import 'package:doodapp/widgets/home/show_more_communities/show_communities_resu
 import 'package:flutter/material.dart';
 
 class SearchCommunityScreen extends StatefulWidget {
-  List<Community> communityList;
+  final List<Community>? communityList;
   SearchCommunityScreen({this.communityList});
 
   @override
@@ -13,20 +13,21 @@ class SearchCommunityScreen extends StatefulWidget {
 }
 
 class _SearchCommunityScreenState extends State<SearchCommunityScreen> {
-  List<Community> searchedItems = List<Community>();
+  List<Community> searchedItems = [];
   @override
   void initState() {
-    searchedItems.addAll(widget.communityList);
+    searchedItems.addAll(widget.communityList ?? []);
     super.initState();
   }
 
-  TextEditingController searchController;
+  final TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
-        child: ApplicationBar(isSearchCommunity: true, title: "Search For Communities"),
+        child: ApplicationBar(
+            isSearchCommunity: true, title: "Search For Communities"),
       ),
       body: ListView(
         physics: NeverScrollableScrollPhysics(),
@@ -34,10 +35,10 @@ class _SearchCommunityScreenState extends State<SearchCommunityScreen> {
           CommunitySearchInput(
             controller: searchController,
             search: (value) {
-              List<Community> tempCommunity = List<Community>();
+              List<Community> tempCommunity = [];
               tempCommunity.addAll(searchedItems);
               if (value.isNotEmpty) {
-                List<Community> communityResult = List<Community>();
+                List<Community> communityResult = [];
                 tempCommunity.forEach((item) {
                   if (item.title.toLowerCase().contains(value.toLowerCase())) {
                     communityResult.add(item);
@@ -50,7 +51,7 @@ class _SearchCommunityScreenState extends State<SearchCommunityScreen> {
               } else {
                 setState(() {
                   searchedItems.clear();
-                  searchedItems.addAll(widget.communityList);
+                  searchedItems.addAll(widget.communityList ?? []);
                 });
               }
             },
@@ -61,7 +62,6 @@ class _SearchCommunityScreenState extends State<SearchCommunityScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return ShowCommunitiesResult(community: searchedItems[index]);
               }),
-          
         ],
       ),
     );

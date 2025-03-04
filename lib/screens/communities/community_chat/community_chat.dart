@@ -10,10 +10,9 @@ class CommunityChatScreen extends StatelessWidget {
   static String routeName = "/screens/communities/community_chat.dart";
   static GlobalKey<FormState> formKey = GlobalKey<FormState>();
   static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  Community community;
+  Community? community;
   CommunityChatScreen({this.community});
   TextEditingController messageController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +23,8 @@ class CommunityChatScreen extends StatelessWidget {
         preferredSize: Size.fromHeight(60),
         child: ApplicationBar(
           isCommunityChat: true,
-          title: "${community.title}",
-          community: community,
+          title: "${community?.title}",
+          community: community!,
         ),
       ),
       body: Form(
@@ -41,21 +40,23 @@ class CommunityChatScreen extends StatelessWidget {
                     keyboardDismissBehavior:
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     reverse: true,
-                    itemCount: snapshot.data.length,
+                    itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ChatContent(
-                            communityChat: snapshot.data[index],
-                            community: community),
+                          communityChat: snapshot.data![index],
+                          community: community!,
+                        ),
                       );
                     });
               },
             ),
           ),
-          ChatTextField(
-              controller: messageController, community: community),
-              SizedBox(height: 10,),
+          ChatTextField(controller: messageController, community: community),
+          SizedBox(
+            height: 10,
+          ),
         ]),
       ),
     );

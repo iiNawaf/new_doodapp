@@ -9,10 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SubmitCommunity extends StatefulWidget {
-  TextEditingController title;
-  TextEditingController bio;
-  Function submit;
-  SubmitCommunity({this.bio, this.title, this.submit});
+  final TextEditingController title;
+  final TextEditingController bio;
+  final Function submit;
+  SubmitCommunity({
+    required this.bio,
+    required this.title,
+    required this.submit,
+  });
   @override
   _SubmitCommunityState createState() => _SubmitCommunityState();
 }
@@ -25,13 +29,13 @@ class _SubmitCommunityState extends State<SubmitCommunity> {
     final community = Provider.of<CommunityProvider>(context);
     return GestureDetector(
       onTap: () async {
-        if (CreateNewCommunity.formKey.currentState.validate()) {
+        if (CreateNewCommunity.formKey.currentState!.validate()) {
           if (CreateNewCommunity.category == null) {
-            Scaffold.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Select a category!"),
             ));
           } else if (ChooseCommunityImage.communityImage == null) {
-            Scaffold.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Please choose an image"),
             ));
           } else {
@@ -61,19 +65,22 @@ class _SubmitCommunityState extends State<SubmitCommunity> {
                                         await community.createCommunity(
                                           widget.title.text,
                                           widget.bio.text,
-                                          authData.loggedInUser.id,
-                                          ChooseCommunityImage.communityImage,
-                                          authData.loggedInUser.username,
-                                          authData.loggedInUser.email,
-                                          authData.loggedInUser.profileImage,
-                                          CreateNewCommunity.category,
+                                          authData.loggedInUser?.id ?? '',
+                                          ChooseCommunityImage.communityImage!,
+                                          authData.loggedInUser?.username ?? '',
+                                          authData.loggedInUser?.email ?? '',
+                                          authData.loggedInUser?.profileImage ??
+                                              '',
+                                          CreateNewCommunity.category!,
                                         );
                                       } catch (e) {
                                         print("Error $e");
                                         Navigator.pop(context);
-                                        CreateNewCommunity.scaffoldKey.currentState.showSnackBar(
-                                          SnackBar(content: Text("Cannot create community at the moment, try again later."))
-                                        );
+                                        CreateNewCommunity
+                                            .scaffoldKey.currentState!
+                                            .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Cannot create community at the moment, try again later.")));
                                       }
 
                                       community.fetchCommunityList();

@@ -6,8 +6,8 @@ import 'package:doodapp/widgets/home/explore_categories.dart';
 import 'package:flutter/material.dart';
 
 class ShowCommunitiesResult extends StatelessWidget {
-  Community community;
-  ShowCommunitiesResult({this.community});
+  final Community community;
+  ShowCommunitiesResult({required this.community});
   @override
   Widget build(BuildContext context) {
     return Padding(

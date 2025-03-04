@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class AllCommunitiesScreen extends StatefulWidget {
   static const routeName = "/screens/home/all_communities.dart";
-  List<Community> communities;
+  final List<Community>? communities;
   AllCommunitiesScreen({this.communities});
 
   @override
@@ -22,9 +22,9 @@ class _AllCommunitiesScreenState extends State<AllCommunitiesScreen> {
       ),
       body: ListView.builder(
           shrinkWrap: true,
-          itemCount: widget.communities.length,
+          itemCount: widget.communities?.length,
           itemBuilder: (BuildContext context, int index) {
-            return ShowCommunitiesResult(community: widget.communities[index]);
+            return ShowCommunitiesResult(community: widget.communities![index]);
           }),
     );
   }

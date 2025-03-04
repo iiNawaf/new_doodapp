@@ -2,8 +2,8 @@ import 'package:doodapp/shared/utilities.dart';
 import 'package:flutter/material.dart';
 
 class DooderContent extends StatelessWidget {
-  String content;
-  DooderContent({@required this.content});
+  final String content;
+  DooderContent({required this.content});
   @override
   Widget build(BuildContext context) {
     return Padding(

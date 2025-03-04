@@ -1,6 +1,6 @@
-class BannerModel{
+class BannerModel {
   final String url;
-  String link;
+  final String link;
 
-  BannerModel({this.link, this.url});
+  BannerModel({required this.link, required this.url});
 }

@@ -6,7 +6,6 @@ import 'package:doodapp/models/user.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/screens/communities/create_new_community/create_new_community.dart';
-import 'package:doodapp/screens/home/all_communities.dart';
 import 'package:doodapp/shared/custom_dialog.dart';
 import 'package:doodapp/shared/utilities.dart';
 import 'package:doodapp/widgets/home/explore_categories.dart';
@@ -17,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/screens/home/home.dart";
-  static File userImage;
+  static File? userImage;
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -44,14 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final communityProvider = Provider.of<CommunityProvider>(context);
     final authData = Provider.of<AuthProvider>(context);
-    return authData.loggedInUser.status == "blocked"
+    return authData.loggedInUser?.status == "blocked"
         ? accountBlockedMessage(authData)
         : Scaffold(
             floatingActionButton: FloatingActionButton(
               backgroundColor: appColor,
               onPressed: () {
                 if (isAlreadyHaveCommunity(
-                    authData.loggedInUser, communityProvider.communityList)) {
+                    authData.loggedInUser!, communityProvider.communityList)) {
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -86,15 +85,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  authData.loggedInUser.accountType == "admin" ?
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AdminPanelScreen()));
-                      },
-                      child: Text("Admin Panel")) : Container(),
+                  authData.loggedInUser?.accountType == "admin"
+                      ? TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AdminPanelScreen()));
+                          },
+                          child: Text("Admin Panel"))
+                      : Container(),
                   SizedBox(height: 10),
                   HomeBanner(),
                   Padding(
@@ -131,28 +131,6 @@ Widget _exploreCategoryTitle() {
       Text(
         "Categories",
         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-    ],
-  );
-}
-
-Widget _recentCommunitiesTitle(
-    BuildContext context, List<Community> communities) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(
-        "Recent Communities",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-      GestureDetector(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                AllCommunitiesScreen(communities: communities))),
-        child: Text(
-          "Show More",
-          style: TextStyle(color: appColor, fontWeight: FontWeight.bold),
-        ),
       ),
     ],
   );

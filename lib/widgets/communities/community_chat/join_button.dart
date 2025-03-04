@@ -1,14 +1,12 @@
 import 'package:doodapp/models/community.dart';
 import 'package:doodapp/models/user.dart';
-import 'package:doodapp/providers/community_provider.dart';
 import 'package:doodapp/shared/utilities.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class JoinButton extends StatelessWidget {
-  Community community;
-  UserModel newMember;
-  Function join;
+  final Community? community;
+  final UserModel? newMember;
+  final Function()? join;
   JoinButton({this.community, this.newMember, this.join});
   @override
   Widget build(BuildContext context) {

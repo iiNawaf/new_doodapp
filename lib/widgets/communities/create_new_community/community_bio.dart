@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CommunityBio extends StatelessWidget {
-  TextEditingController controller;
-  CommunityBio({this.controller});
+  final TextEditingController controller;
+  CommunityBio({required this.controller});
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return "Field is empty";
         } else if (value.length > 150) {
           return "You the max length is 150!";
@@ -21,8 +21,9 @@ class CommunityBio extends StatelessWidget {
       cursorColor: Colors.grey,
       textAlign: TextAlign.start,
       decoration: InputDecoration(
-        alignLabelWithHint: true,
-          labelText: "Community Bio", border: OutlineInputBorder()),
+          alignLabelWithHint: true,
+          labelText: "Community Bio",
+          border: OutlineInputBorder()),
     );
   }
 }
