@@ -1,4 +1,3 @@
-import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:doodapp/providers/auth_provider.dart';
 import 'package:doodapp/providers/banner_provider.dart';
 import 'package:doodapp/providers/category_provider.dart';
@@ -192,11 +191,10 @@ class _AppManagerState extends State<AppManager> {
                       ),
                 bottomNavigationBar: Container(
                   height: 100,
-                  child: BubbleBottomBar(
-                    opacity: .2,
+                  child: BottomNavigationBar(
                     backgroundColor:
                         selectedIndex == 2 ? Color(0xff303030) : appColor,
-                    currentIndex: selectedIndex,
+                    currentIndex: selectedIndex!,
                     onTap: _onItemTapped,
                     elevation: 0,
                     items: [
@@ -211,11 +209,12 @@ class _AppManagerState extends State<AppManager> {
                 body: screens.elementAt(selectedIndex ?? 0));
   }
 
-  BubbleBottomBarItem navItem(String title, String img) {
-    return BubbleBottomBarItem(
-        backgroundColor: Color(0xffffffff),
-        icon: Image.asset(img),
-        activeIcon: Image.asset(img),
-        title: Text(title));
+  BottomNavigationBarItem navItem(String title, String img) {
+    return BottomNavigationBarItem(
+      backgroundColor: Color(0xffffffff),
+      icon: Image.asset(img),
+      activeIcon: Image.asset(img),
+      label: title,
+    );
   }
 }
