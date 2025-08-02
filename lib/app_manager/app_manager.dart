@@ -189,22 +189,22 @@ class _AppManagerState extends State<AppManager> {
                                           : "Profile",
                         ),
                       ),
-                bottomNavigationBar: Container(
-                  height: 100,
-                  child: BottomNavigationBar(
-                    backgroundColor:
-                        selectedIndex == 2 ? Color(0xff303030) : appColor,
-                    currentIndex: selectedIndex!,
-                    onTap: _onItemTapped,
-                    elevation: 0,
-                    items: [
-                      navItem("Home", './assets/icons/home.png'),
-                      navItem("Messages", './assets/icons/message.png'),
-                      navItem("DoodArea", './assets/icons/incognito.png'),
-                      navItem("Discover", './assets/icons/compass.png'),
-                      navItem("My Profile", './assets/icons/profile_icon.png'),
-                    ],
-                  ),
+                bottomNavigationBar: BottomNavigationBar(
+                  currentIndex: selectedIndex!,
+                  onTap: _onItemTapped,
+                  elevation: 0,
+                  selectedItemColor: Colors.white,
+                  unselectedItemColor: Colors.white70,
+                  backgroundColor:
+                      selectedIndex == 2 ? Color(0xff303030) : appColor,
+                  type: BottomNavigationBarType.fixed,
+                  items: [
+                    navItem("Home", './assets/icons/home.png'),
+                    navItem("Messages", './assets/icons/message.png'),
+                    navItem("DoodArea", './assets/icons/incognito.png'),
+                    navItem("Discover", './assets/icons/compass.png'),
+                    navItem("My Profile", './assets/icons/profile_icon.png'),
+                  ],
                 ),
                 body: screens.elementAt(selectedIndex ?? 0));
   }

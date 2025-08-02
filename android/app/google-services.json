@@ -13,12 +13,7 @@
           "package_name": "com.dood.doodapp"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "528872969009-t5a5utmd45824pesqc5uibiv93499tsj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyAks79DDma_6vh3l-Ggt9dxJgEibwI8EDc"
@@ -26,19 +21,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "528872969009-t5a5utmd45824pesqc5uibiv93499tsj.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "528872969009-cf36e9pupsjk1r3s1prm5p1bvhmo589e.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.dood"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
